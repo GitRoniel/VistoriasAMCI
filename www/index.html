@@ -261,8 +261,9 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .login-card .lch h3{font-size:17px;font-weight:900;letter-spacing:.3px}
 .login-card .lch p{font-size:11px;color:var(--lioness);font-weight:600;margin-top:3px}
 .login-card .lcb{padding:18px 22px 22px}
-.login-err{font-size:11.5px;color:#b9382c;font-weight:700;margin-top:9px;display:none}
-.login-err.show{display:block}
+.login-err{font-size:12px;color:#b9382c;font-weight:800;margin-top:10px;display:none;background:#fdecea;border:1px solid #f2b3aa;padding:9px 11px;border-radius:8px;line-height:1.4}
+.login-err.show{display:block;animation:shk .3s}
+@keyframes shk{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
 .login-note{font-size:10.5px;color:var(--text-light);margin-top:12px;line-height:1.5}
 .userchip{display:flex;align-items:center;gap:6px}
 .userchip .ub{background:rgba(163,143,82,.22);border:1px solid rgba(163,143,82,.45);color:var(--lioness);padding:4px 8px;border-radius:6px;font-weight:800;letter-spacing:.2px;font-size:9.5px;white-space:nowrap}
@@ -283,6 +284,19 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .acc-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 @media(max-width:520px){.acc-form{grid-template-columns:1fr}}
 .acc-form select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12.5px;color:var(--text)}
+
+.qapt{position:relative;border:1.5px solid var(--border);border-radius:5px;overflow:hidden;aspect-ratio:1.55/1;background:#fff}
+.qapt .qgrid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;height:100%}
+.qapt .qgrid .qd{border:none;padding:0;cursor:pointer;transition:.1s}
+.qapt .qgrid .qd:hover{filter:brightness(.9)}
+.qapt .qgrid .qd:active{transform:scale(.94)}
+.qapt .qnum{position:absolute;inset:0;display:grid;place-items:center;font-size:10px;font-weight:800;color:#12241a;pointer-events:none;text-shadow:0 0 3px #fff,0 0 4px #fff}
+.pavrow .pa .qapt{aspect-ratio:1.2/1}
+.quadguide{display:flex;gap:12px;align-items:center;background:#f3f6f1;border:1px solid var(--border);border-radius:8px;padding:9px 11px;margin-bottom:11px;flex-wrap:wrap}
+.quadguide .qg-mini{display:grid;grid-template-columns:repeat(2,44px);grid-auto-rows:18px;gap:2px;flex-shrink:0}
+.quadguide .qg-mini span{display:grid;place-items:center;font-size:8px;font-weight:800;color:var(--moss);background:#e2ebdd;border-radius:3px}
+.quadguide .qg-txt{font-size:10.5px;color:var(--text-light);font-weight:600;line-height:1.45;flex:1;min-width:170px}
+.quadguide .qg-txt b{color:var(--moss)}
 </style>
 </head>
 <body>
@@ -301,9 +315,6 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
       <span class="userchip" id="userChip" style="display:none"><span class="ub" id="userName">—</span></span>
       <button class="icon-btn" id="btnLogout" title="Sair" style="display:none"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
       <span class="sync-dot" id="syncDot" title="Modo local"></span>
-      <button class="icon-btn" id="btnCfg" title="Conectar Google Sheets">
-        <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51"/></svg>
-      </button>
       <button class="icon-btn" id="btnExp" title="Exportar">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
       </button>
@@ -420,19 +431,7 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 <div class="pop" id="pop"></div>
 
 <!-- CONFIG MODAL -->
-<div class="ov" id="cfgOv"><div class="modal">
-  <div class="mh"><h3>Conectar ao Google Sheets<small>Sincronização da planilha</small></h3><button class="mx-close" id="cfgClose">×</button></div>
-  <div class="mb">
-    <p>Cole a URL do <b>App da Web (Apps Script)</b> da sua planilha. Sem conexão, o app funciona em <b>modo local</b> (dados só nesta sessão).</p>
-    <div class="fld"><label>URL do App da Web</label><input id="cfgUrl" placeholder="https://script.google.com/macros/s/XXX/exec"></div>
-    <div class="brow"><button class="btn p" id="cfgConnect">Conectar e carregar</button><button class="btn g" id="cfgPush">Enviar dados atuais</button></div>
-    <div class="note">Toda alteração é enviada automaticamente para a planilha quando conectado.</div>
-    <h4>Configuração (1 vez)</h4>
-    <ol><li>Planilha → <code>Extensões ▸ Apps Script</code>.</li><li>Cole o código abaixo e salve.</li><li><code>Implantar ▸ Novo ▸ App da Web</code>, acesso <code>Qualquer pessoa</code>.</li><li>Cole a URL <code>/exec</code> acima.</li></ol>
-    <pre class="code" id="scriptCode"></pre>
-    <button class="btn g" id="copyScript">Copiar código</button>
-  </div>
-</div></div>
+</div>
 
 <!-- EXPORT MODAL -->
 <div class="ov" id="expOv"><div class="modal" style="max-width:440px">
@@ -446,7 +445,7 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 <div class="toast" id="toast"></div>
 
 <script>
-const CONFIG={WEBAPP_URL:""};
+const CONFIG={WEBAPP_URL:"https://script.google.com/macros/s/AKfycbxxrtJCLKz9gW9T3Q9qrnhIyY6AmCRss6PxEB8lW9LYCTyVzNRz-Q-ZJTnAXBCD2zwn/exec"};
 const BLOCOS=["A","B","C","D","E","F","G","H"];
 const PAVS=["6º","5º","4º","3º","2º","1º","T"];
 const PAVL={"6º":"6º Pav","5º":"5º Pav","4º":"4º Pav","3º":"3º Pav","2º":"2º Pav","1º":"1º Pav","T":"Térreo"};
@@ -512,6 +511,23 @@ function buildGrid(kind,fr){
   return h+"</tbody></table></div>";
 }
 
+function buildObraGeral(){
+  const single = obraBlk!=="ALL"; const blk=obraBlk;
+  const cell=(b,p,a)=>{
+    const st=state.obra[kO(b,p,a)];
+    const qd=FRENTES.map(f=>{const c=st[f.key],s=CLR_O[c];
+      return `<button class="qd" data-k="obra" data-fr="${f.key}" data-b="${b}" data-p="${p}" data-a="${a}" title="${f.name}: ${STL[c]}" style="background:${s.bg}"></button>`;}).join("");
+    return `<div class="qapt"><div class="qgrid">${qd}</div><span class="qnum">${a}</span></div>`;
+  };
+  if(single){
+    let h='<div class="single">';
+    PAVS.forEach(p=>{ h+=`<div class="pavrow"><div class="pl">${PAVL[p]}</div><div class="pa">`+APTS.map(a=>cell(blk,p,a)).join("")+`</div></div>`; });
+    return h+"</div>";
+  }
+  let h='<div class="gridscroll"><table class="mx"><thead><tr><th class="corner">PAV</th>'+BLOCOS.map(b=>`<th class="blkh">${b}</th>`).join("")+"</tr></thead><tbody>";
+  PAVS.forEach(p=>{ h+=`<tr><td class="pavh">${PAVL[p].toUpperCase()}</td>`+BLOCOS.map(b=>`<td class="cell"><div class="apts">`+APTS.map(a=>cell(b,p,a)).join("")+`</div></td>`).join("")+"</tr>"; });
+  return h+"</tbody></table></div>";
+}
 function blocoSelector(kind){
   const cur = kind==="obra"?obraBlk:cliBlk;
   const opts = isMobile ? BLOCOS : ["ALL",...BLOCOS];
@@ -528,16 +544,10 @@ function renderObra(){
   const roB=document.getElementById("roBannerObra"); if(roB)roB.style.display=canEdit()?"none":"flex";
   const frenteWrap=document.getElementById("frentes"), kpiWrap=document.getElementById("obraKpis");
   if(obraMode==="geral"){
-    frenteWrap.style.display="none"; kpiWrap.style.display="none";
+    frenteWrap.style.display="none"; kpiWrap.style.display="";
+    kpiWrap.innerHTML=`<div class="quadguide"><div class="qg-mini"><span>Acab</span><span>Inst</span><span>Qual</span><span>AsTec</span></div><div class="qg-txt">Cada apartamento \u00e9 dividido em 4 setores: <b>Acabamento</b> e <b>Instala\u00e7\u00f5es</b> (linha de cima), <b>Qualidade</b> e <b>Assist. T\u00e9cnica</b> (linha de baixo). Toque em cada parte para editar aquele setor.</div></div>`;
     document.getElementById("obraBlocos").innerHTML=blocoSelector("obra"); bindBlocos();
-    document.getElementById("obraGrid").innerHTML=FRENTES.map(f=>{
-      const vals=Object.values(state.obra).map(o=>o[f.key]);
-      const doneN=vals.filter(v=>f.done.includes(v)).length;
-      const isFront=f.key==="acab"||f.key==="inst";
-      return `<div class="stack-sec"><div class="sst"><div class="snm">${f.step} \u00b7 ${f.name}</div>`+
-        `<div class="sstat"><b>${doneN}</b>/448 ${isFront?"liberados":"aprovados"} \u00b7 ${Math.round(doneN/448*100)}%</div></div>`+
-        buildGrid("obra",f.key)+`</div>`;
-    }).join("");
+    document.getElementById("obraGrid").innerHTML=buildObraGeral();
     document.getElementById("obraLegend").innerHTML=[...new Set([...FRONT_FLOW,...CHECK_FLOW])].map(c=>{
       const s=CLR_O[c];return `<div class="lg"><span class="sw" style="background:${s.bg};border-color:${s.bd}"></span>${STL[c]}</div>`;}).join("");
     return;
@@ -634,7 +644,7 @@ function apply(code){
   renderResumo();
   closePop(); scheduleSave(); sendLog(detalhe); toast("Status atualizado");
 }
-document.addEventListener("click",e=>{const t=e.target.closest(".apt");if(t){e.stopPropagation();openPop(t);return;}if(!e.target.closest(".pop"))closePop();});
+document.addEventListener("click",e=>{const t=e.target.closest(".apt,.qd");if(t){e.stopPropagation();openPop(t);return;}if(!e.target.closest(".pop"))closePop();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closePop();});
 addEventListener("resize",()=>{closePop();const m=matchMedia("(max-width:720px)").matches;if(m!==isMobile){isMobile=m;if(isMobile){if(obraBlk==="ALL")obraBlk="A";if(cliBlk==="ALL")cliBlk="A";}renderObra();renderCli();}});
 addEventListener("scroll",closePop,true);
@@ -662,11 +672,7 @@ async function load(){if(!CONFIG.WEBAPP_URL)return;setSync("busy");try{const r=a
   renderObra();renderCli();renderResumo();setSync("ok");toast("Dados carregados da planilha");}catch(e){setSync("err");toast("Falha ao conectar");}}
 
 /* ── MODALS ── */
-const cfgOv=document.getElementById("cfgOv"),expOv=document.getElementById("expOv");
-btnCfg.onclick=()=>{cfgUrl.value=CONFIG.WEBAPP_URL;cfgOv.classList.add("open");};
-cfgClose.onclick=()=>cfgOv.classList.remove("open"); cfgOv.onclick=e=>{if(e.target===cfgOv)cfgOv.classList.remove("open");};
-cfgConnect.onclick=()=>{const u=cfgUrl.value.trim();if(!u){toast("Informe a URL");return;}CONFIG.WEBAPP_URL=u;try{localStorage.setItem(LS_URL,u);}catch(e){}cfgOv.classList.remove("open");bootAuth();};
-cfgPush.onclick=()=>{const u=cfgUrl.value.trim();if(u)CONFIG.WEBAPP_URL=u;if(!CONFIG.WEBAPP_URL){toast("Conecte uma URL");return;}push();toast("Enviando…");};
+const expOv=document.getElementById("expOv");
 btnExp.onclick=()=>expOv.classList.add("open"); expClose.onclick=()=>expOv.classList.remove("open"); expOv.onclick=e=>{if(e.target===expOv)expOv.classList.remove("open");};
 function dl(n,c,t){const b=new Blob([c],{type:t}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=n;a.click();URL.revokeObjectURL(a.href);}
 dlJson.onclick=()=>dl("vistorias-alto-jeriva.json",JSON.stringify({state,exportedAt:new Date().toISOString()},null,2),"application/json");
@@ -674,106 +680,6 @@ dlCsvO.onclick=()=>{const p=payload().obra;dl("vistoria-obra.csv","\ufeffBloco;P
 dlCsvC.onclick=()=>{const p=payload().cliente;dl("vistoria-cliente.csv","\ufeffBloco;Pavimento;Apto;Status\n"+p.map(r=>[r.bloco,PAVL[r.pav],r.apto,r.status].join(";")).join("\n"),"text/csv");};
 impFile.onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(j.state){Object.assign(state.obra,j.state.obra);Object.assign(state.cli,j.state.cli);renderObra();renderCli();renderResumo();scheduleSave();toast("Importado");expOv.classList.remove("open");}else toast("Arquivo inválido");}catch(_){toast("Erro ao ler");}};rd.readAsText(f);};
 
-const APPS_SCRIPT=`/** Vistorias Alto do Jeriva - conector do app HTML (v2: acessos + logs) **/
-var OBRA_KEYS=['bloco','pav','apto','acab','inst','qual','astec'];
-var CLI_KEYS =['bloco','pav','apto','status'];
-var ACC_KEYS =['usuario','senha','nivel','nome','ativo'];
-var LOG_KEYS =['data','usuario','detalhe'];
-
-function doGet(e){
-  var p=(e&&e.parameter)||{};
-  var a=p.action||'read';
-  var ss=SpreadsheetApp.getActiveSpreadsheet();
-  if(a==='login')     return json_(login_(ss,p.u,p.p));
-  if(a==='listUsers') return json_({users:listUsers_(ss)});
-  if(a==='saveUser')  return json_(saveUser_(ss,p));
-  if(a==='listLogs')  return json_({logs:listLogs_(ss)});
-  if(a==='log'){ addLog_(ss,p.user,p.detalhe); return json_({ok:true}); }
-  return json_({obra:read_(ss,'OBRA',OBRA_KEYS),cliente:read_(ss,'CLIENTE',CLI_KEYS)});
-}
-function doPost(e){
-  var b=JSON.parse(e.postData.contents);
-  if(b.action==='write'){
-    var ss=SpreadsheetApp.getActiveSpreadsheet();
-    write_(ss,'OBRA',b.data.obra,OBRA_KEYS);
-    write_(ss,'CLIENTE',b.data.cliente,CLI_KEYS);
-  }
-  return ContentService.createTextOutput('ok');
-}
-function json_(o){return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);}
-function sheet_(ss,name,keys){
-  var s=ss.getSheetByName(name);
-  if(!s){ s=ss.insertSheet(name); s.getRange(1,1,1,keys.length).setValues([keys]); }
-  return s;
-}
-function read_(ss,name,keys){
-  var s=ss.getSheetByName(name); if(!s) return [];
-  var last=s.getLastRow(); if(last<2) return [];
-  var v=s.getRange(2,1,last-1,keys.length).getValues();
-  return v.filter(function(r){return r[0]!=='' && r[0]!=null;})
-          .map(function(r){var o={};keys.forEach(function(k,i){o[k]=r[i];});return o;});
-}
-function write_(ss,name,rows,keys){
-  var s=sheet_(ss,name,keys);
-  if(!rows.length) return;
-  var body=rows.map(function(r){return keys.map(function(k){return r[k];});});
-  s.getRange(2,1,body.length,keys.length).setValues(body); // mantem cores e listas
-}
-function ensureAcc_(ss){
-  var s=ss.getSheetByName('ACESSOS');
-  if(!s){ s=ss.insertSheet('ACESSOS');
-    s.getRange(1,1,1,ACC_KEYS.length).setValues([ACC_KEYS]);
-    s.getRange(2,1,1,ACC_KEYS.length).setValues([['admin','admin','admin','Administrador',true]]); }
-  return s;
-}
-function listUsers_(ss){
-  var s=ensureAcc_(ss); var last=s.getLastRow(); if(last<2) return [];
-  var v=s.getRange(2,1,last-1,ACC_KEYS.length).getValues();
-  return v.filter(function(r){return r[0]!=='' && r[0]!=null;})
-    .map(function(r){return {usuario:r[0],nivel:r[2],nome:r[3],ativo:r[4]};});
-}
-function login_(ss,u,p){
-  var s=ensureAcc_(ss); var last=s.getLastRow(); if(last<2) return {ok:false};
-  var v=s.getRange(2,1,last-1,ACC_KEYS.length).getValues();
-  for(var i=0;i<v.length;i++){
-    if(String(v[i][0]).trim()===String(u).trim() && String(v[i][1])===String(p)){
-      if(String(v[i][4]).toLowerCase()==='false') return {ok:false,inactive:true};
-      addLog_(ss,u,'Login no sistema');
-      return {ok:true,nivel:String(v[i][2]||'visitante').toLowerCase(),nome:v[i][3]||u};
-    }
-  }
-  return {ok:false};
-}
-function saveUser_(ss,p){
-  var s=ensureAcc_(ss); var last=s.getLastRow();
-  var rows=last>1?s.getRange(2,1,last-1,ACC_KEYS.length).getValues():[];
-  var row=-1;
-  for(var i=0;i<rows.length;i++){ if(String(rows[i][0]).trim()===String(p.u).trim()){ row=i+2; break; } }
-  var senha=p.p;
-  if(row>0){
-    if(senha==='' || senha==null){ senha=s.getRange(row,2).getValue(); }
-    s.getRange(row,1,1,ACC_KEYS.length).setValues([[p.u,senha,p.nivel||'visitante',p.nome||'',true]]);
-  } else {
-    s.appendRow([p.u,senha||'',p.nivel||'visitante',p.nome||'',true]);
-  }
-  return {ok:true};
-}
-function addLog_(ss,user,detalhe){
-  var s=ss.getSheetByName('LOGS');
-  if(!s){ s=ss.insertSheet('LOGS'); s.getRange(1,1,1,LOG_KEYS.length).setValues([LOG_KEYS]); }
-  var tz=ss.getSpreadsheetTimeZone()||'America/Sao_Paulo';
-  var stamp=Utilities.formatDate(new Date(),tz,'dd/MM/yyyy HH:mm:ss');
-  s.appendRow([stamp,user||'',detalhe||'']);
-}
-function listLogs_(ss){
-  var s=ss.getSheetByName('LOGS'); if(!s) return [];
-  var last=s.getLastRow(); if(last<2) return [];
-  var n=Math.min(100,last-1);
-  var v=s.getRange(last-n+1,1,n,LOG_KEYS.length).getValues();
-  return v.reverse().map(function(r){return {data:r[0],usuario:r[1],detalhe:r[2]};});
-}`;
-scriptCode.textContent=APPS_SCRIPT;
-copyScript.onclick=()=>navigator.clipboard.writeText(APPS_SCRIPT).then(()=>toast("Código copiado"));
 
 let tt; function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),1800);}
 
@@ -894,7 +800,6 @@ function renderResumo(){
 }
 
 /* BOOT */
-try{const _su=localStorage.getItem(LS_URL); if(_su)CONFIG.WEBAPP_URL=_su;}catch(e){}
 initState();
 if(isMobile){obraBlk="A";cliBlk="A";}
 renderObra(); renderCli(); renderResumo();
@@ -916,7 +821,7 @@ bootAuth();
       <div class="fld"><label>Senha</label><input id="loginP" type="password" autocomplete="current-password"></div>
       <div class="brow"><button class="btn p" id="loginBtn" style="width:100%;justify-content:center">Entrar</button></div>
       <div class="login-err" id="loginErr">Usuário ou senha inválidos.</div>
-      <div class="login-note">Os usuários ficam na aba <b>ACESSOS</b> da planilha. Sem planilha conectada, o app roda em modo local (sem login).</div>
+      <div class="login-note">Use o usuário e a senha cadastrados na aba <b>ACESSOS</b> da planilha. Primeiro acesso: <b>admin</b> / <b>admin</b>.</div>
     </div>
   </div>
 </div>
