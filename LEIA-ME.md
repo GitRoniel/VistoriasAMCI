@@ -52,3 +52,21 @@ O app cria/atualiza duas abas na planilha: **OBRA** (bloco, pav, apto, acabament
 ## Observação sobre fontes offline
 
 O app usa a fonte **Urbanist** via Google Fonts. Para uso 100% offline no celular, baixe os arquivos da fonte e referencie localmente em `www/` (opcional — sem internet ele usa a fonte padrão do sistema).
+
+---
+
+## Novidades desta versão (v2)
+
+- **Resumo Geral** — nova primeira aba com dashboard consolidado da Obra (progresso por setor e por bloco) e da Cliente (aprovação, revistoria, etc.).
+- **Vistoria · Obra — Visão geral** — botão "Visão geral (todos os setores)" mostra as 4 frentes (Acabamento, Instalações, Qualidade, Assist. Técnica) empilhadas na mesma tela, além do modo "Por frente" tradicional.
+- **Revistoria na Cliente** — o apartamento do cliente agora tem o status **Revistoria** (laranja), além de Não liberado / Agendado / Aprovado / Reprovado.
+- **Acessos & Logs** — tela de login (usuário/senha), níveis **Admin** (edita) e **Visitante** (só visualiza), página de Acessos para o admin cadastrar usuários, e registro de **logs** (data/hora, usuário e alteração feita).
+
+### Planilha — novas abas (criadas automaticamente pelo Apps Script)
+
+- **ACESSOS** — colunas: `usuario`, `senha`, `nivel` (admin/visitante), `nome`, `ativo`. Já vem com um usuário inicial `admin` / senha `admin` (troque depois).
+- **LOGS** — colunas: `data`, `usuario`, `detalhe`. Preenchida automaticamente a cada login e alteração de status.
+
+Basta atualizar o código do Apps Script (engrenagem ▸ Copiar código) e reimplantar. As abas OBRA e CLIENTE continuam funcionando igual.
+
+> Observação de segurança: o controle de acesso é básico (senhas em texto na planilha), adequado para uso interno da equipe — não use senhas importantes.
