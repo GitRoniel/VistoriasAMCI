@@ -316,6 +316,8 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .donut{flex-shrink:0}
 .donut .dv{font-size:23px;font-weight:900;fill:var(--moss)}
 .donut .dl{font-size:8.5px;font-weight:800;fill:var(--text-light);text-transform:uppercase;letter-spacing:.4px}
+.pop .popdate .pd-note{font-size:9.5px;color:var(--text-light);font-weight:700;margin-bottom:7px;line-height:1.35;background:#f3f6f1;padding:6px 8px;border-radius:6px}
+.pop{min-width:210px}
 </style>
 </head>
 <body>
@@ -511,14 +513,18 @@ function norm(t){t=(t||"").toString().trim().toLowerCase();
 
 const SEED=[{"bloco": "A", "pav": "6º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "5º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "4º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "3º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "2º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Revistoria", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "1º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Revistoria", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "T", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Revistoria", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "6º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Em Andamento", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "5º", "acab": "Em Andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "4º", "acab": "Em andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "3º", "acab": "Em andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "2º", "acab": "Em Andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "1º", "acab": "Não Iniciado", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "T", "acab": "Não Iniciado", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}];
 
-const state={obra:{},cli:{},obraDt:{},cliDt:{}};
+const SEED_CRON=[["A","6º","","","","","2026-05-12","2026-05-12","",""],["A","5º","","","","","2026-05-18","2026-05-18","2026-06-22",""],["A","4º","","","","","2026-05-26","2026-05-26","2026-06-24",""],["A","3º","","","","","2026-05-28","2026-05-28","2026-06-26",""],["A","2º","","","","","2026-06-02","2026-06-02","2026-06-29",""],["A","1º","","","","","2026-06-05","2026-06-05","2026-07-01",""],["A","T","","","","","2026-06-09","2026-06-09","2026-07-03",""],["B","6º","2026-07-20","","2026-07-20","","2026-07-20","","2026-07-20",""],["B","5º","2026-07-20","","2026-07-20","","2026-07-21","","2026-07-21",""],["B","4º","2026-07-21","","2026-07-21","","2026-07-21","","2026-07-21",""],["B","3º","2026-07-21","","2026-07-21","","2026-07-22","","2026-07-22",""],["B","2º","2026-07-22","","2026-07-22","","2026-07-22","","2026-07-22",""],["B","1º","2026-07-22","","2026-07-22","","2026-07-23","","2026-07-23",""],["B","T","2026-07-23","","2026-07-23","","2026-07-24","","2026-07-24",""],["C","6º","2026-06-11","","2026-06-11","","2026-06-15","2026-07-01","2026-06-15",""],["C","5º","2026-06-12","","2026-06-12","","2026-06-16","","2026-06-16",""],["C","4º","2026-06-15","","2026-06-15","","2026-06-17","","2026-06-17",""],["C","3º","2026-06-16","","2026-06-16","","2026-06-17","","2026-06-17",""],["C","2º","2026-06-17","","2026-06-17","","2026-06-18","","2026-06-18",""],["C","1º","2026-06-18","","2026-06-18","","2026-06-19","","2026-06-19",""],["C","T","2026-06-19","","2026-06-19","","2026-06-22","","2026-06-22",""],["D","6º","2026-07-14","","2026-07-14","","2026-07-14","","2026-07-14",""],["D","5º","2026-07-14","","2026-07-14","","2026-07-15","","2026-07-15",""],["D","4º","2026-07-15","","2026-07-15","","2026-07-15","","2026-07-15",""],["D","3º","2026-07-15","","2026-07-15","","2026-07-16","","2026-07-16",""],["D","2º","2026-07-16","","2026-07-16","","2026-07-16","","2026-07-16",""],["D","1º","2026-07-16","","2026-07-16","","2026-07-17","","2026-07-17",""],["D","T","2026-07-17","","2026-07-17","","2026-07-20","","2026-07-20",""],["E","6º","2026-06-22","","2026-06-22","","2026-06-22","","2026-06-22",""],["E","5º","2026-06-22","","2026-06-22","","2026-06-23","","2026-06-23",""],["E","4º","2026-06-23","","2026-06-23","","2026-06-23","","2026-06-23",""],["E","3º","2026-06-23","","2026-06-23","","2026-06-24","","2026-06-24",""],["E","2º","2026-06-24","","2026-06-24","","2026-06-24","","2026-06-24",""],["E","1º","2026-06-24","","2026-06-24","","2026-06-25","","2026-06-25",""],["E","T","2026-06-25","","2026-06-25","","2026-06-26","","2026-06-26",""],["F","6º","2026-07-08","","2026-07-08","","2026-07-08","","2026-07-08",""],["F","5º","2026-07-08","","2026-07-08","","2026-07-09","","2026-07-09",""],["F","4º","2026-07-09","","2026-07-09","","2026-07-09","","2026-07-09",""],["F","3º","2026-07-09","","2026-07-09","","2026-07-10","","2026-07-10",""],["F","2º","2026-07-10","","2026-07-10","","2026-07-10","","2026-07-10",""],["F","1º","2026-07-10","","2026-07-10","","2026-07-13","","2026-07-13",""],["F","T","2026-07-13","","2026-07-13","","2026-07-14","","2026-07-14",""],["G","6º","2026-06-26","","2026-06-26","","2026-06-26","","2026-06-26",""],["G","5º","2026-06-26","","2026-06-26","","2026-06-29","","2026-06-29",""],["G","4º","2026-06-29","","2026-06-29","","2026-06-29","","2026-06-29",""],["G","3º","2026-06-29","","2026-06-29","","2026-06-30","","2026-06-30",""],["G","2º","2026-06-30","","2026-06-30","","2026-06-30","","2026-06-30",""],["G","1º","2026-06-30","","2026-06-30","","2026-07-01","","2026-07-01",""],["G","T","2026-07-01","","2026-07-01","","2026-07-02","","2026-07-02",""],["H","6º","2026-07-02","","2026-07-02","","2026-07-02","","2026-07-02",""],["H","5º","2026-07-02","","2026-07-02","","2026-07-03","","2026-07-03",""],["H","4º","2026-07-03","","2026-07-03","","2026-07-03","","2026-07-03",""],["H","3º","2026-07-03","","2026-07-03","","2026-07-06","","2026-07-06",""],["H","2º","2026-07-06","","2026-07-06","","2026-07-06","","2026-07-06",""],["H","1º","2026-07-06","","2026-07-06","","2026-07-07","","2026-07-07",""],["H","T","2026-07-07","","2026-07-07","","2026-07-08","","2026-07-08",""]];
+const state={obra:{},cli:{},obraPlan:{},obraLib:{},cliDt:{}};
+const kPV=(b,p)=>b+"|"+p;
+const dstr=v=>(""+(v||"")).slice(0,10);
 const kO=(b,p,a)=>b+"|"+p+"|"+a, kC=(b,p,a)=>b+"|"+p+"|"+a;
 function initState(){
   const m={}; SEED.forEach(r=>m[r.bloco+"|"+r.pav]=r);
   BLOCOS.forEach(b=>PAVS.forEach(p=>{
     const r=m[b+"|"+p]||{};
     const base={acab:norm(r.acab),inst:norm(r.inst),qual:norm(r.qual),astec:norm(r.astec)};
-    APTS.forEach(a=>{ state.obra[kO(b,p,a)]={...base}; state.cli[kC(b,p,a)]="nl"; state.obraDt[kO(b,p,a)]={acab:"",inst:"",qual:"",astec:""}; state.cliDt[kC(b,p,a)]=""; });
+    APTS.forEach(a=>{ state.obra[kO(b,p,a)]={...base}; state.cli[kC(b,p,a)]="nl"; state.cliDt[kC(b,p,a)]=""; });
+    state.obraPlan[kPV(b,p)]={acab:"",inst:"",qual:"",astec:""}; state.obraLib[kPV(b,p)]={acab:"",inst:"",qual:"",astec:""};
   }));
 }
 
@@ -549,11 +555,12 @@ function fmtDate(d){ if(!d)return""; const p=(""+d).slice(0,10).split("-"); retu
 function buildObraTable(){
   const blks = obraBlk==="ALL" ? BLOCOS : [obraBlk];
   let h='<div class="gridscroll"><table class="ctbl"><thead><tr><th>Apto</th>'+FRENTES.map(f=>`<th>${f.name}</th>`).join("")+'</tr></thead><tbody>';
-  blks.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>{
-    const st=state.obra[kO(b,p,a)], dt=state.obraDt[kO(b,p,a)];
-    h+=`<tr><td class="cap">${b} · ${PAVL[p]} · ${a}</td>`+FRENTES.map(f=>{const c=st[f.key],s=CLR_O[c],dd=dt[f.key];
-      return `<td class="cstat" data-k="obra" data-fr="${f.key}" data-b="${b}" data-p="${p}" data-a="${a}" style="background:${s.bg};color:${s.tx};border-color:${s.bd}"><span class="cs-l">${STL[c]}</span>${dd?`<span class="cs-d">${fmtDate(dd)}</span>`:""}</td>`;}).join("")+`</tr>`;
-  })));
+  blks.forEach(b=>PAVS.forEach(p=>{const pl=state.obraPlan[kPV(b,p)],lb=state.obraLib[kPV(b,p)];APTS.forEach(a=>{
+    const st=state.obra[kO(b,p,a)];
+    h+=`<tr><td class="cap">${b} · ${PAVL[p]} · ${a}</td>`+FRENTES.map(f=>{const c=st[f.key],s=CLR_O[c];const dp=pl[f.key],dl=lb[f.key];
+      const dtxt=(dp||dl)?`<span class="cs-d">${dp?"P "+fmtDate(dp):""}${dp&&dl?" · ":""}${dl?"L "+fmtDate(dl):""}</span>`:"";
+      return `<td class="cstat" data-k="obra" data-fr="${f.key}" data-b="${b}" data-p="${p}" data-a="${a}" style="background:${s.bg};color:${s.tx};border-color:${s.bd}"><span class="cs-l">${STL[c]}</span>${dtxt}</td>`;}).join("")+`</tr>`;
+  });}));
   return h+'</tbody></table></div>';
 }
 function donut(pct,color,label){
@@ -679,11 +686,19 @@ function renderPop(){
   if(k==="obra"){const f=FRENTES.find(x=>x.key===ctx.fr);flow=f.flow;title=f.name+" · "+ctx.b+" "+PAVL[ctx.p]+" · Apto "+ctx.a;}
   else{flow=CLI_FLOW;title="Apto "+ctx.a+" · Bloco "+ctx.b+" "+PAVL[ctx.p];}
   const cur=k==="obra"?state.obra[kO(ctx.b,ctx.p,ctx.a)][ctx.fr]:state.cli[kC(ctx.b,ctx.p,ctx.a)];
-  const dt=k==="obra"?state.obraDt[kO(ctx.b,ctx.p,ctx.a)][ctx.fr]:state.cliDt[kC(ctx.b,ctx.p,ctx.a)];
+  let dateHtml;
+  if(k==="obra"){
+    const pl=state.obraPlan[kPV(ctx.b,ctx.p)][ctx.fr]||"", lb=state.obraLib[kPV(ctx.b,ctx.p)][ctx.fr]||"";
+    dateHtml=`<div class="popdate"><div class="pd-note">Datas do andar — Bloco ${ctx.b} · ${PAVL[ctx.p]} (valem p/ todos os aptos)</div><label>Data planejada</label><input type="date" id="popPlan" value="${pl}"><label style="margin-top:7px">Data de liberação da vistoria</label><input type="date" id="popLib" value="${lb}"></div>`;
+  } else {
+    const dt=state.cliDt[kC(ctx.b,ctx.p,ctx.a)]||"";
+    dateHtml=`<div class="popdate"><label>Data do status${cur?" — "+lbl[cur]:""}</label><input type="date" id="popDate" value="${dt}"></div>`;
+  }
   pop.innerHTML=`<div class="pt">${title}</div>`+
-    flow.map(c=>{const s=CLR[c];return `<button class="opt ${c===cur?"sel":""}" data-code="${c}"><span class="od" style="background:${s.bg};border-color:${s.bd}"></span>${lbl[c]}</button>`;}).join("")+
-    `<div class="popdate"><label>Data do status${cur?" — "+lbl[cur]:""}</label><input type="date" id="popDate" value="${dt||""}"></div>`;
+    flow.map(c=>{const s=CLR[c];return `<button class="opt ${c===cur?"sel":""}" data-code="${c}"><span class="od" style="background:${s.bg};border-color:${s.bd}"></span>${lbl[c]}</button>`;}).join("")+dateHtml;
   pop.querySelectorAll(".opt").forEach(o=>o.onclick=()=>setStatus(o.dataset.code));
+  const dp=pop.querySelector("#popPlan"); if(dp)dp.onchange=()=>setCronDate("plan",dp.value);
+  const dl=pop.querySelector("#popLib"); if(dl)dl.onchange=()=>setCronDate("lib",dl.value);
   const di=pop.querySelector("#popDate"); if(di)di.onchange=()=>setDate(di.value);
 }
 function setStatus(code){
@@ -702,15 +717,24 @@ function setStatus(code){
 function setDate(v){
   if(!ctx)return;
   if(!canEdit()){toast("Somente leitura — faça login para editar");return;}
-  let detalhe="";
-  if(ctx.k==="obra"){state.obraDt[kO(ctx.b,ctx.p,ctx.a)][ctx.fr]=v;
-    const fn=(FRENTES.find(x=>x.key===ctx.fr)||{}).name||ctx.fr;
-    detalhe="OBRA · "+ctx.b+" "+PAVL[ctx.p]+" apto "+ctx.a+" · "+fn+" · data: "+(v?fmtDate(v):"(sem data)");
-    renderObra();}
-  else{state.cliDt[kC(ctx.b,ctx.p,ctx.a)]=v;
-    detalhe="CLIENTE · "+ctx.b+" "+PAVL[ctx.p]+" apto "+ctx.a+" · data: "+(v?fmtDate(v):"(sem data)");
-    renderCli();}
-  renderResumo(); scheduleSave(); sendLog(detalhe); toast("Data salva"); renderPop();
+  state.cliDt[kC(ctx.b,ctx.p,ctx.a)]=v;
+  const detalhe="CLIENTE · "+ctx.b+" "+PAVL[ctx.p]+" apto "+ctx.a+" · data: "+(v?fmtDate(v):"(sem data)");
+  renderCli(); renderResumo(); scheduleSave(); sendLog(detalhe); toast("Data salva"); renderPop();
+}
+function setCronDate(which,v){
+  if(!ctx)return;
+  if(!canEdit()){toast("Somente leitura — faça login para editar");return;}
+  const key=kPV(ctx.b,ctx.p);
+  (which==="plan"?state.obraPlan:state.obraLib)[key][ctx.fr]=v;
+  const fn=(FRENTES.find(x=>x.key===ctx.fr)||{}).name||ctx.fr;
+  const rot=which==="plan"?"planejada":"de liberação";
+  const detalhe="OBRA · "+ctx.b+" "+PAVL[ctx.p]+" · "+fn+" · data "+rot+": "+(v?fmtDate(v):"(sem data)");
+  renderObra(); renderResumo(); scheduleSave(); sendLog(detalhe); toast("Data salva"); renderPop();
+}
+function applyCron(){
+  SEED_CRON.forEach(r=>{const key=kPV(r[0],r[1]); if(!state.obraPlan[key])return;
+    state.obraPlan[key]={acab:r[2],inst:r[4],qual:r[6],astec:r[8]};
+    state.obraLib[key]={acab:r[3],inst:r[5],qual:r[7],astec:r[9]};});
 }
 function closePop(){pop.classList.remove("open");ctx=null;}
 
@@ -734,12 +758,15 @@ document.querySelectorAll(".tab,.navbtn").forEach(t=>t.onclick=()=>switchView(t.
 function setSync(m){const d=document.getElementById("syncDot");d.className="sync-dot"+(m?" "+m:"");}
 let saveTimer=null;
 function scheduleSave(){if(!CONFIG.WEBAPP_URL)return;clearTimeout(saveTimer);setSync("busy");saveTimer=setTimeout(push,900);}
-function payload(){const obra=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>{const k=kO(b,p,a),s=state.obra[k],dt=state.obraDt[k];obra.push({bloco:b,pav:p,apto:a,acab:STL[s.acab],inst:STL[s.inst],qual:STL[s.qual],astec:STL[s.astec],acab_dt:dt.acab,inst_dt:dt.inst,qual_dt:dt.qual,astec_dt:dt.astec});})));
-  const cliente=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>cliente.push({bloco:b,pav:p,apto:a,status:CLL[state.cli[kC(b,p,a)]],status_dt:state.cliDt[kC(b,p,a)]}))));return{obra,cliente};}
+function payload(){const obra=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>{const s=state.obra[kO(b,p,a)];obra.push({bloco:b,pav:p,apto:a,acab:STL[s.acab],inst:STL[s.inst],qual:STL[s.qual],astec:STL[s.astec]});})));
+  const cliente=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>cliente.push({bloco:b,pav:p,apto:a,status:CLL[state.cli[kC(b,p,a)]],status_dt:state.cliDt[kC(b,p,a)]}))));
+  const cronograma=[];BLOCOS.forEach(b=>PAVS.forEach(p=>{const pl=state.obraPlan[kPV(b,p)],lb=state.obraLib[kPV(b,p)];cronograma.push({bloco:b,pav:p,acab_plan:pl.acab,acab_lib:lb.acab,inst_plan:pl.inst,inst_lib:lb.inst,qual_plan:pl.qual,qual_lib:lb.qual,astec_plan:pl.astec,astec_lib:lb.astec});}));
+  return{obra,cliente,cronograma};}
 async function push(){if(!CONFIG.WEBAPP_URL){setSync("");return;}try{await fetch(CONFIG.WEBAPP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"write",user:currentUser?currentUser.usuario:"",data:payload()})});setSync("ok");}catch(e){setSync("err");}}
 async function load(){if(!CONFIG.WEBAPP_URL)return;setSync("busy");try{const r=await fetch(CONFIG.WEBAPP_URL+"?action=read");const j=await r.json();
-  if(j.obra)j.obra.forEach(r=>{const k=kO(r.bloco,r.pav,r.apto);if(state.obra[k]){state.obra[k]={acab:norm(r.acab),inst:norm(r.inst),qual:norm(r.qual),astec:norm(r.astec)};state.obraDt[k]={acab:(""+(r.acab_dt||"")).slice(0,10),inst:(""+(r.inst_dt||"")).slice(0,10),qual:(""+(r.qual_dt||"")).slice(0,10),astec:(""+(r.astec_dt||"")).slice(0,10)};}});
+  if(j.obra)j.obra.forEach(r=>{const k=kO(r.bloco,r.pav,r.apto);if(state.obra[k])state.obra[k]={acab:norm(r.acab),inst:norm(r.inst),qual:norm(r.qual),astec:norm(r.astec)};});
   if(j.cliente)j.cliente.forEach(r=>{const k=kC(r.bloco,r.pav,r.apto);if(k in state.cli){const t=(r.status||"").toLowerCase();state.cli[k]=t.includes("revist")?"rv":t.includes("aprov")?"ap":t.includes("reprov")?"rp":t.includes("agend")?"ag":"nl";state.cliDt[k]=(""+(r.status_dt||"")).slice(0,10);}});
+  if(j.cronograma)j.cronograma.forEach(r=>{const key=kPV(r.bloco,r.pav);if(state.obraPlan[key]){state.obraPlan[key]={acab:dstr(r.acab_plan),inst:dstr(r.inst_plan),qual:dstr(r.qual_plan),astec:dstr(r.astec_plan)};state.obraLib[key]={acab:dstr(r.acab_lib),inst:dstr(r.inst_lib),qual:dstr(r.qual_lib),astec:dstr(r.astec_lib)};}});
   renderObra();renderCli();renderResumo();setSync("ok");toast("Dados carregados da planilha");}catch(e){setSync("err");toast("Falha ao conectar");}}
 
 /* ── MODALS ── */
@@ -857,7 +884,7 @@ function renderResumo(){
 }
 
 /* BOOT */
-initState();
+initState(); applyCron();
 if(isMobile){obraBlk="A";cliBlk="A";}
 renderObra(); renderCli(); renderResumo();
 document.getElementById("obraModeTog").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;obraMode=b.dataset.mode;renderObra();});
