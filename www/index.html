@@ -464,6 +464,19 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 
 <div class="toast" id="toast"></div>
 
+<div class="login-ov" id="loginOv">
+  <div class="login-card">
+    <div class="lch"><h3>Vistorias · Alto do Jerivá</h3><p>Acesse com seu usuário e senha</p><button class="login-x" id="loginClose" title="Fechar">×</button></div>
+    <div class="lcb">
+      <div class="fld"><label>Usuário</label><input id="loginU" autocomplete="username"></div>
+      <div class="fld"><label>Senha</label><input id="loginP" type="password" autocomplete="current-password"></div>
+      <div class="brow"><button class="btn p" id="loginBtn" style="width:100%;justify-content:center">Entrar</button></div>
+      <div class="login-err" id="loginErr">Usuário ou senha inválidos.</div>
+      <div class="login-note">Use o usuário e a senha cadastrados na aba <b>ACESSOS</b> da planilha. Primeiro acesso: <b>admin</b> / <b>admin</b>.</div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 const CONFIG={WEBAPP_URL:"https://script.google.com/macros/s/AKfycbxxrtJCLKz9gW9T3Q9qrnhIyY6AmCRss6PxEB8lW9LYCTyVzNRz-Q-ZJTnAXBCD2zwn/exec"};
@@ -861,17 +874,5 @@ switchView("resumo");
 setSync("");
 bootAuth();
 </script>
-<div class="login-ov" id="loginOv">
-  <div class="login-card">
-    <div class="lch"><h3>Vistorias · Alto do Jerivá</h3><p>Acesse com seu usuário e senha</p><button class="login-x" id="loginClose" title="Fechar">×</button></div>
-    <div class="lcb">
-      <div class="fld"><label>Usuário</label><input id="loginU" autocomplete="username"></div>
-      <div class="fld"><label>Senha</label><input id="loginP" type="password" autocomplete="current-password"></div>
-      <div class="brow"><button class="btn p" id="loginBtn" style="width:100%;justify-content:center">Entrar</button></div>
-      <div class="login-err" id="loginErr">Usuário ou senha inválidos.</div>
-      <div class="login-note">Use o usuário e a senha cadastrados na aba <b>ACESSOS</b> da planilha. Primeiro acesso: <b>admin</b> / <b>admin</b>.</div>
-    </div>
-  </div>
-</div>
 </body>
 </html>
