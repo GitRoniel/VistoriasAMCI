@@ -297,6 +297,25 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .quadguide .qg-mini span{display:grid;place-items:center;font-size:8px;font-weight:800;color:var(--moss);background:#e2ebdd;border-radius:3px}
 .quadguide .qg-txt{font-size:10.5px;color:var(--text-light);font-weight:600;line-height:1.45;flex:1;min-width:170px}
 .quadguide .qg-txt b{color:var(--moss)}
+
+.login-card .lch{position:relative}
+.login-x{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.16);color:#fff;width:28px;height:28px;border-radius:7px;font-size:18px;line-height:1}
+.pop .popdate{border-top:1px solid var(--border);margin-top:5px;padding:8px 8px 4px}
+.pop .popdate label{display:block;font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--text-light);margin-bottom:4px}
+.pop .popdate input{width:100%;padding:7px 9px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;color:var(--text)}
+.ctbl{border-collapse:separate;border-spacing:0;width:100%;font-size:11px;min-width:600px}
+.ctbl thead th{position:sticky;top:0;background:var(--moss);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:8px 8px;text-align:left;z-index:2}
+.ctbl td.cap{font-weight:800;color:var(--moss);white-space:nowrap;padding:6px 9px;background:#f4f7f2;border-bottom:1px solid var(--border);position:sticky;left:0;z-index:1}
+.ctbl td.cstat{padding:6px 9px;border-bottom:1px solid #eef2ea;border-left:1px solid #eef2ea;cursor:pointer;transition:.1s;min-width:118px}
+.ctbl td.cstat:hover{filter:brightness(.95)}
+.ctbl td.cstat .cs-l{display:block;font-weight:800;font-size:11px;line-height:1.2}
+.ctbl td.cstat .cs-d{display:block;font-size:9px;font-weight:700;opacity:.85;margin-top:1px}
+.ctbl tbody tr:hover td.cap{background:#e9efe6}
+.rg-charts{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.rg-charts .rg-stats{flex:1;min-width:150px}
+.donut{flex-shrink:0}
+.donut .dv{font-size:23px;font-weight:900;fill:var(--moss)}
+.donut .dl{font-size:8.5px;font-weight:800;fill:var(--text-light);text-transform:uppercase;letter-spacing:.4px}
 </style>
 </head>
 <body>
@@ -312,6 +331,7 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
     <div class="head-spacer"></div>
     <div class="head-title"><strong>Controle de Vistorias</strong>Alto do Jerivá Residencial</div>
     <div class="head-actions">
+      <button class="icon-btn" id="btnLogin" title="Entrar para editar"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></button>
       <span class="userchip" id="userChip" style="display:none"><span class="ub" id="userName">—</span></span>
       <button class="icon-btn" id="btnLogout" title="Sair" style="display:none"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
       <span class="sync-dot" id="syncDot" title="Modo local"></span>
@@ -444,6 +464,7 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 const CONFIG={WEBAPP_URL:"https://script.google.com/macros/s/AKfycbxxrtJCLKz9gW9T3Q9qrnhIyY6AmCRss6PxEB8lW9LYCTyVzNRz-Q-ZJTnAXBCD2zwn/exec"};
 const BLOCOS=["A","B","C","D","E","F","G","H"];
@@ -477,14 +498,14 @@ function norm(t){t=(t||"").toString().trim().toLowerCase();
 
 const SEED=[{"bloco": "A", "pav": "6º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "5º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "4º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "3º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "2º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Revistoria", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "1º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Revistoria", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "T", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Revistoria", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "6º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Em Andamento", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "5º", "acab": "Em Andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "4º", "acab": "Em andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "3º", "acab": "Em andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "2º", "acab": "Em Andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "1º", "acab": "Não Iniciado", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "T", "acab": "Não Iniciado", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}];
 
-const state={obra:{},cli:{}};
+const state={obra:{},cli:{},obraDt:{},cliDt:{}};
 const kO=(b,p,a)=>b+"|"+p+"|"+a, kC=(b,p,a)=>b+"|"+p+"|"+a;
 function initState(){
   const m={}; SEED.forEach(r=>m[r.bloco+"|"+r.pav]=r);
   BLOCOS.forEach(b=>PAVS.forEach(p=>{
     const r=m[b+"|"+p]||{};
     const base={acab:norm(r.acab),inst:norm(r.inst),qual:norm(r.qual),astec:norm(r.astec)};
-    APTS.forEach(a=>{ state.obra[kO(b,p,a)]={...base}; state.cli[kC(b,p,a)]="nl"; });
+    APTS.forEach(a=>{ state.obra[kO(b,p,a)]={...base}; state.cli[kC(b,p,a)]="nl"; state.obraDt[kO(b,p,a)]={acab:"",inst:"",qual:"",astec:""}; state.cliDt[kC(b,p,a)]=""; });
   }));
 }
 
@@ -511,22 +532,41 @@ function buildGrid(kind,fr){
   return h+"</tbody></table></div>";
 }
 
-function buildObraGeral(){
-  const single = obraBlk!=="ALL"; const blk=obraBlk;
-  const cell=(b,p,a)=>{
-    const st=state.obra[kO(b,p,a)];
-    const qd=FRENTES.map(f=>{const c=st[f.key],s=CLR_O[c];
-      return `<button class="qd" data-k="obra" data-fr="${f.key}" data-b="${b}" data-p="${p}" data-a="${a}" title="${f.name}: ${STL[c]}" style="background:${s.bg}"></button>`;}).join("");
-    return `<div class="qapt"><div class="qgrid">${qd}</div><span class="qnum">${a}</span></div>`;
-  };
-  if(single){
-    let h='<div class="single">';
-    PAVS.forEach(p=>{ h+=`<div class="pavrow"><div class="pl">${PAVL[p]}</div><div class="pa">`+APTS.map(a=>cell(blk,p,a)).join("")+`</div></div>`; });
-    return h+"</div>";
-  }
-  let h='<div class="gridscroll"><table class="mx"><thead><tr><th class="corner">PAV</th>'+BLOCOS.map(b=>`<th class="blkh">${b}</th>`).join("")+"</tr></thead><tbody>";
-  PAVS.forEach(p=>{ h+=`<tr><td class="pavh">${PAVL[p].toUpperCase()}</td>`+BLOCOS.map(b=>`<td class="cell"><div class="apts">`+APTS.map(a=>cell(b,p,a)).join("")+`</div></td>`).join("")+"</tr>"; });
-  return h+"</tbody></table></div>";
+function fmtDate(d){ if(!d)return""; const p=(""+d).slice(0,10).split("-"); return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:d; }
+function buildObraTable(){
+  const blks = obraBlk==="ALL" ? BLOCOS : [obraBlk];
+  let h='<div class="gridscroll"><table class="ctbl"><thead><tr><th>Apto</th>'+FRENTES.map(f=>`<th>${f.name}</th>`).join("")+'</tr></thead><tbody>';
+  blks.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>{
+    const st=state.obra[kO(b,p,a)], dt=state.obraDt[kO(b,p,a)];
+    h+=`<tr><td class="cap">${b} · ${PAVL[p]} · ${a}</td>`+FRENTES.map(f=>{const c=st[f.key],s=CLR_O[c],dd=dt[f.key];
+      return `<td class="cstat" data-k="obra" data-fr="${f.key}" data-b="${b}" data-p="${p}" data-a="${a}" style="background:${s.bg};color:${s.tx};border-color:${s.bd}"><span class="cs-l">${STL[c]}</span>${dd?`<span class="cs-d">${fmtDate(dd)}</span>`:""}</td>`;}).join("")+`</tr>`;
+  })));
+  return h+'</tbody></table></div>';
+}
+function donut(pct,color,label){
+  const R=52,C=2*Math.PI*R,off=C*(1-Math.max(0,Math.min(100,pct))/100);
+  return `<svg class="donut" viewBox="0 0 130 130" width="118" height="118"><circle cx="65" cy="65" r="${R}" fill="none" stroke="#e6ece3" stroke-width="13"/><circle class="dprog" cx="65" cy="65" r="${R}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" data-off="${off.toFixed(1)}" data-c="${C.toFixed(1)}" transform="rotate(-90 65 65)"/><text x="65" y="63" text-anchor="middle" class="dv">${pct}%</text><text x="65" y="82" text-anchor="middle" class="dl">${label}</text></svg>`;
+}
+function animateResumo(){
+  if(!window.gsap)return;
+  gsap.from("#resumoGrid .rg-card",{y:16,opacity:0,duration:.5,stagger:.12,ease:"power2.out",clearProps:"all"});
+  document.querySelectorAll("#resumoGrid .dprog").forEach(el=>{const off=+el.getAttribute("data-off"),c=+el.getAttribute("data-c");gsap.fromTo(el,{strokeDashoffset:c},{strokeDashoffset:off,duration:1.1,ease:"power2.out"});});
+  gsap.from("#resumoGrid .track i",{scaleX:0,transformOrigin:"left center",duration:.9,stagger:.02,ease:"power2.out",clearProps:"transform"});
+  gsap.from("#resumoGrid .rb .n",{opacity:0,y:8,duration:.5,stagger:.05,delay:.15,clearProps:"all"});
+}
+function animateView(v){
+  if(!window.gsap)return;
+  const el=document.getElementById("v-"+v); if(!el)return;
+  gsap.from(el.querySelectorAll(".sec-head,.modetog,.kstrip,.frentes,.blocosel,.clitop,.gridscroll,.single,.cbox,.rg-card,.legend"),{y:12,opacity:0,duration:.4,stagger:.05,ease:"power2.out",clearProps:"all"});
+}
+function updateAuthUI(){
+  const inl=!!currentUser;
+  const bl=document.getElementById("btnLogin"); if(bl)bl.style.display=inl?"none":"grid";
+  document.getElementById("userChip").style.display=inl?"flex":"none";
+  document.getElementById("btnLogout").style.display=inl?"grid":"none";
+  const isAdmin=inl&&currentUser.nivel==="admin";
+  document.querySelectorAll(".tab-admin,.nav-admin").forEach(el=>el.style.display=isAdmin?"":"none");
+  if(inl)document.getElementById("userName").textContent=(currentUser.nome||currentUser.usuario)+" · "+(currentUser.nivel==="admin"?"Admin":"Visitante");
 }
 function blocoSelector(kind){
   const cur = kind==="obra"?obraBlk:cliBlk;
@@ -545,9 +585,9 @@ function renderObra(){
   const frenteWrap=document.getElementById("frentes"), kpiWrap=document.getElementById("obraKpis");
   if(obraMode==="geral"){
     frenteWrap.style.display="none"; kpiWrap.style.display="";
-    kpiWrap.innerHTML=`<div class="quadguide"><div class="qg-mini"><span>Acab</span><span>Inst</span><span>Qual</span><span>AsTec</span></div><div class="qg-txt">Cada apartamento \u00e9 dividido em 4 setores: <b>Acabamento</b> e <b>Instala\u00e7\u00f5es</b> (linha de cima), <b>Qualidade</b> e <b>Assist. T\u00e9cnica</b> (linha de baixo). Toque em cada parte para editar aquele setor.</div></div>`;
+    kpiWrap.innerHTML=`<div class="quadguide"><div class="qg-txt">Tabela consolidada \u2014 1 linha por apartamento com as 4 frentes. Toque em qualquer c\u00e9lula para mudar o status e a data. Use o filtro de bloco para focar.</div></div>`;
     document.getElementById("obraBlocos").innerHTML=blocoSelector("obra"); bindBlocos();
-    document.getElementById("obraGrid").innerHTML=buildObraGeral();
+    document.getElementById("obraGrid").innerHTML=buildObraTable();
     document.getElementById("obraLegend").innerHTML=[...new Set([...FRONT_FLOW,...CHECK_FLOW])].map(c=>{
       const s=CLR_O[c];return `<div class="lg"><span class="sw" style="background:${s.bg};border-color:${s.bd}"></span>${STL[c]}</div>`;}).join("");
     return;
@@ -610,17 +650,8 @@ function bindBlocos(){
 /* ── POPOVER ── */
 const pop=document.getElementById("pop"); let ctx=null;
 function openPop(t){
-  const k=t.dataset.k; ctx={...t.dataset};
-  let flow,CLR,cur,title;
-  if(k==="obra"){const fr=t.dataset.fr||obraFrente; const f=FRENTES.find(x=>x.key===fr); flow=f.flow; CLR=CLR_O;
-    cur=state.obra[kO(t.dataset.b,t.dataset.p,t.dataset.a)][fr];
-    title=f.name+" · "+t.dataset.b+" "+PAVL[t.dataset.p]+" · Apto "+t.dataset.a;}
-  else{flow=CLI_FLOW; CLR=CLR_C; cur=state.cli[kC(t.dataset.b,t.dataset.p,t.dataset.a)];
-    title="Apto "+t.dataset.a+" · Bloco "+t.dataset.b+" "+PAVL[t.dataset.p];}
-  const lbl=k==="obra"?STL:CLL;
-  pop.innerHTML=`<div class="pt">${title}</div>`+flow.map(c=>{const s=CLR[c];
-    return `<button class="opt ${c===cur?"sel":""}" data-code="${c}"><span class="od" style="background:${s.bg};border-color:${s.bd}"></span>${lbl[c]}</button>`;}).join("");
-  pop.querySelectorAll(".opt").forEach(o=>o.onclick=()=>apply(o.dataset.code));
+  ctx={k:t.dataset.k,fr:t.dataset.fr||obraFrente,b:t.dataset.b,p:t.dataset.p,a:t.dataset.a};
+  renderPop();
   pop.classList.add("open");
   const r=t.getBoundingClientRect(),pw=pop.offsetWidth,ph=pop.offsetHeight;
   let x=r.left,y=r.bottom+5;
@@ -628,23 +659,49 @@ function openPop(t){
   if(y+ph>innerHeight-8)y=r.top-ph-5;
   pop.style.left=Math.max(8,x)+"px"; pop.style.top=Math.max(8,y)+"px";
 }
-function closePop(){pop.classList.remove("open");ctx=null;}
-function apply(code){
+function renderPop(){
   if(!ctx)return;
-  if(!canEdit()){closePop();toast("Somente leitura \u2014 sem permiss\u00e3o para editar");return;}
+  const k=ctx.k, CLR=k==="obra"?CLR_O:CLR_C, lbl=k==="obra"?STL:CLL;
+  let flow,title;
+  if(k==="obra"){const f=FRENTES.find(x=>x.key===ctx.fr);flow=f.flow;title=f.name+" · "+ctx.b+" "+PAVL[ctx.p]+" · Apto "+ctx.a;}
+  else{flow=CLI_FLOW;title="Apto "+ctx.a+" · Bloco "+ctx.b+" "+PAVL[ctx.p];}
+  const cur=k==="obra"?state.obra[kO(ctx.b,ctx.p,ctx.a)][ctx.fr]:state.cli[kC(ctx.b,ctx.p,ctx.a)];
+  const dt=k==="obra"?state.obraDt[kO(ctx.b,ctx.p,ctx.a)][ctx.fr]:state.cliDt[kC(ctx.b,ctx.p,ctx.a)];
+  pop.innerHTML=`<div class="pt">${title}</div>`+
+    flow.map(c=>{const s=CLR[c];return `<button class="opt ${c===cur?"sel":""}" data-code="${c}"><span class="od" style="background:${s.bg};border-color:${s.bd}"></span>${lbl[c]}</button>`;}).join("")+
+    `<div class="popdate"><label>Data do status${cur?" — "+lbl[cur]:""}</label><input type="date" id="popDate" value="${dt||""}"></div>`;
+  pop.querySelectorAll(".opt").forEach(o=>o.onclick=()=>setStatus(o.dataset.code));
+  const di=pop.querySelector("#popDate"); if(di)di.onchange=()=>setDate(di.value);
+}
+function setStatus(code){
+  if(!ctx)return;
+  if(!canEdit()){toast("Somente leitura — faça login para editar");return;}
   let detalhe="";
-  if(ctx.k==="obra"){const fr=ctx.fr||obraFrente;const key=kO(ctx.b,ctx.p,ctx.a);const old=state.obra[key][fr];
-    state.obra[key][fr]=code;
-    const fn=(FRENTES.find(x=>x.key===fr)||{}).name||fr;
-    detalhe="OBRA \u00b7 "+ctx.b+" "+PAVL[ctx.p]+" apto "+ctx.a+" \u00b7 "+fn+": "+(STL[old]||old)+" \u2192 "+(STL[code]||code);
+  if(ctx.k==="obra"){const key=kO(ctx.b,ctx.p,ctx.a);const old=state.obra[key][ctx.fr];state.obra[key][ctx.fr]=code;
+    const fn=(FRENTES.find(x=>x.key===ctx.fr)||{}).name||ctx.fr;
+    detalhe="OBRA · "+ctx.b+" "+PAVL[ctx.p]+" apto "+ctx.a+" · "+fn+": "+(STL[old]||old)+" → "+(STL[code]||code);
     renderObra();}
   else{const key=kC(ctx.b,ctx.p,ctx.a);const old=state.cli[key];state.cli[key]=code;
-    detalhe="CLIENTE \u00b7 "+ctx.b+" "+PAVL[ctx.p]+" apto "+ctx.a+": "+(CLL[old]||old)+" \u2192 "+(CLL[code]||code);
+    detalhe="CLIENTE · "+ctx.b+" "+PAVL[ctx.p]+" apto "+ctx.a+": "+(CLL[old]||old)+" → "+(CLL[code]||code);
     renderCli();}
-  renderResumo();
-  closePop(); scheduleSave(); sendLog(detalhe); toast("Status atualizado");
+  renderResumo(); scheduleSave(); sendLog(detalhe); toast("Status atualizado"); renderPop();
 }
-document.addEventListener("click",e=>{const t=e.target.closest(".apt,.qd");if(t){e.stopPropagation();openPop(t);return;}if(!e.target.closest(".pop"))closePop();});
+function setDate(v){
+  if(!ctx)return;
+  if(!canEdit()){toast("Somente leitura — faça login para editar");return;}
+  let detalhe="";
+  if(ctx.k==="obra"){state.obraDt[kO(ctx.b,ctx.p,ctx.a)][ctx.fr]=v;
+    const fn=(FRENTES.find(x=>x.key===ctx.fr)||{}).name||ctx.fr;
+    detalhe="OBRA · "+ctx.b+" "+PAVL[ctx.p]+" apto "+ctx.a+" · "+fn+" · data: "+(v?fmtDate(v):"(sem data)");
+    renderObra();}
+  else{state.cliDt[kC(ctx.b,ctx.p,ctx.a)]=v;
+    detalhe="CLIENTE · "+ctx.b+" "+PAVL[ctx.p]+" apto "+ctx.a+" · data: "+(v?fmtDate(v):"(sem data)");
+    renderCli();}
+  renderResumo(); scheduleSave(); sendLog(detalhe); toast("Data salva"); renderPop();
+}
+function closePop(){pop.classList.remove("open");ctx=null;}
+
+document.addEventListener("click",e=>{const t=e.target.closest(".apt,.qd,.cstat");if(t){e.stopPropagation();openPop(t);return;}if(!e.target.closest(".pop"))closePop();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closePop();});
 addEventListener("resize",()=>{closePop();const m=matchMedia("(max-width:720px)").matches;if(m!==isMobile){isMobile=m;if(isMobile){if(obraBlk==="ALL")obraBlk="A";if(cliBlk==="ALL")cliBlk="A";}renderObra();renderCli();}});
 addEventListener("scroll",closePop,true);
@@ -653,8 +710,9 @@ addEventListener("scroll",closePop,true);
 function switchView(v){
   document.querySelectorAll(".tab,.navbtn").forEach(t=>t.classList.toggle("active",t.dataset.view===v));
   document.querySelectorAll(".view").forEach(s=>s.classList.toggle("active",s.id==="v-"+v));
-  if(v==="resumo")renderResumo();
+  if(v==="resumo"){renderResumo(); animateResumo();}
   if(v==="acessos"){loadUsers();loadLogs();}
+  animateView(v);
   closePop(); scrollTo(0,0);
 }
 document.querySelectorAll(".tab,.navbtn").forEach(t=>t.onclick=()=>switchView(t.dataset.view));
@@ -663,12 +721,12 @@ document.querySelectorAll(".tab,.navbtn").forEach(t=>t.onclick=()=>switchView(t.
 function setSync(m){const d=document.getElementById("syncDot");d.className="sync-dot"+(m?" "+m:"");}
 let saveTimer=null;
 function scheduleSave(){if(!CONFIG.WEBAPP_URL)return;clearTimeout(saveTimer);setSync("busy");saveTimer=setTimeout(push,900);}
-function payload(){const obra=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>{const s=state.obra[kO(b,p,a)];obra.push({bloco:b,pav:p,apto:a,acab:STL[s.acab],inst:STL[s.inst],qual:STL[s.qual],astec:STL[s.astec]});})));
-  const cliente=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>cliente.push({bloco:b,pav:p,apto:a,status:CLL[state.cli[kC(b,p,a)]]}))));return{obra,cliente};}
-async function push(){if(!CONFIG.WEBAPP_URL){setSync("");return;}try{await fetch(CONFIG.WEBAPP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"write",data:payload()})});setSync("ok");}catch(e){setSync("err");}}
+function payload(){const obra=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>{const k=kO(b,p,a),s=state.obra[k],dt=state.obraDt[k];obra.push({bloco:b,pav:p,apto:a,acab:STL[s.acab],inst:STL[s.inst],qual:STL[s.qual],astec:STL[s.astec],acab_dt:dt.acab,inst_dt:dt.inst,qual_dt:dt.qual,astec_dt:dt.astec});})));
+  const cliente=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>cliente.push({bloco:b,pav:p,apto:a,status:CLL[state.cli[kC(b,p,a)]],status_dt:state.cliDt[kC(b,p,a)]}))));return{obra,cliente};}
+async function push(){if(!CONFIG.WEBAPP_URL){setSync("");return;}try{await fetch(CONFIG.WEBAPP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"write",user:currentUser?currentUser.usuario:"",data:payload()})});setSync("ok");}catch(e){setSync("err");}}
 async function load(){if(!CONFIG.WEBAPP_URL)return;setSync("busy");try{const r=await fetch(CONFIG.WEBAPP_URL+"?action=read");const j=await r.json();
-  if(j.obra)j.obra.forEach(r=>{const k=kO(r.bloco,r.pav,r.apto);if(state.obra[k])state.obra[k]={acab:norm(r.acab),inst:norm(r.inst),qual:norm(r.qual),astec:norm(r.astec)};});
-  if(j.cliente)j.cliente.forEach(r=>{const k=kC(r.bloco,r.pav,r.apto);if(k in state.cli){const t=(r.status||"").toLowerCase();state.cli[k]=t.includes("revist")?"rv":t.includes("aprov")?"ap":t.includes("reprov")?"rp":t.includes("agend")?"ag":"nl";}});
+  if(j.obra)j.obra.forEach(r=>{const k=kO(r.bloco,r.pav,r.apto);if(state.obra[k]){state.obra[k]={acab:norm(r.acab),inst:norm(r.inst),qual:norm(r.qual),astec:norm(r.astec)};state.obraDt[k]={acab:(""+(r.acab_dt||"")).slice(0,10),inst:(""+(r.inst_dt||"")).slice(0,10),qual:(""+(r.qual_dt||"")).slice(0,10),astec:(""+(r.astec_dt||"")).slice(0,10)};}});
+  if(j.cliente)j.cliente.forEach(r=>{const k=kC(r.bloco,r.pav,r.apto);if(k in state.cli){const t=(r.status||"").toLowerCase();state.cli[k]=t.includes("revist")?"rv":t.includes("aprov")?"ap":t.includes("reprov")?"rp":t.includes("agend")?"ag":"nl";state.cliDt[k]=(""+(r.status_dt||"")).slice(0,10);}});
   renderObra();renderCli();renderResumo();setSync("ok");toast("Dados carregados da planilha");}catch(e){setSync("err");toast("Falha ao conectar");}}
 
 /* ── MODALS ── */
@@ -698,7 +756,7 @@ function sendLog(detalhe){
 async function doLogin(){
   const u=document.getElementById("loginU").value.trim(), p=document.getElementById("loginP").value;
   const err=document.getElementById("loginErr");
-  if(!CONFIG.WEBAPP_URL){err.textContent="Conecte a planilha (engrenagem) antes de entrar.";err.classList.add("show");return;}
+  if(!CONFIG.WEBAPP_URL){err.textContent="Sem conexão com a planilha. Tente novamente.";err.classList.add("show");return;}
   if(!u||!p){err.textContent="Preencha usuario e senha.";err.classList.add("show");return;}
   try{
     const j=await gsGet({action:"login",u:u,p:p});
@@ -712,20 +770,15 @@ async function doLogin(){
 function afterLogin(){
   document.getElementById("loginOv").classList.remove("open");
   document.getElementById("loginErr").classList.remove("show");
-  document.getElementById("userChip").style.display="flex";
-  document.getElementById("btnLogout").style.display="grid";
-  document.getElementById("userName").textContent=(currentUser.nome||currentUser.usuario)+" · "+(currentUser.nivel==="admin"?"Admin":"Visitante");
-  const isAdmin=currentUser.nivel==="admin";
-  document.querySelectorAll(".tab-admin,.nav-admin").forEach(el=>el.style.display=isAdmin?"":"none");
-  setSync("busy"); load(); renderObra(); renderResumo();
-  if(isAdmin)loadUsers();
+  updateAuthUI();
+  setSync("busy"); load(); renderObra(); renderCli(); renderResumo();
+  if(currentUser.nivel==="admin")loadUsers();
 }
 function bootAuth(){
-  const ov=document.getElementById("loginOv");
-  if(!CONFIG.WEBAPP_URL){ ov.classList.remove("open"); return; }
   let raw=null; try{raw=localStorage.getItem(LS_SESS);}catch(e){}
   if(raw){ try{ const s=JSON.parse(raw); if(Date.now()-s.ts < 43200000){ currentUser={usuario:s.usuario,nivel:s.nivel,nome:s.nome}; afterLogin(); return; } }catch(e){} }
-  ov.classList.add("open");
+  currentUser=null; updateAuthUI();
+  if(CONFIG.WEBAPP_URL){ setSync("busy"); load(); renderResumo(); }
 }
 async function loadUsers(){
   if(!CONFIG.WEBAPP_URL||!(currentUser&&currentUser.nivel==="admin"))return;
@@ -764,36 +817,27 @@ const BARCLR=p=>p>=80?"#2f9e5b":p>=40?"#6B8040":"#ED7A12";
 function renderResumo(){
   const grid=document.getElementById("resumoGrid"); if(!grid)return;
   const total=448;
-  const sec=FRENTES.map(f=>{
-    const vals=Object.values(state.obra).map(o=>o[f.key]);
-    const c=x=>vals.filter(v=>v===x).length;
-    const done=vals.filter(v=>f.done.includes(v)).length;
-    return {name:f.name,step:f.step,isFront:(f.key==="acab"||f.key==="inst"),done,rv:c("rv"),pct:Math.round(done/total*100)};
-  });
+  const sec=FRENTES.map(f=>{const vals=Object.values(state.obra).map(o=>o[f.key]);const c=x=>vals.filter(v=>v===x).length;const done=vals.filter(v=>f.done.includes(v)).length;return {name:f.name,done,rv:c("rv"),pct:Math.round(done/total*100)};});
   const obraGlobal=Math.round(sec.reduce((s,x)=>s+x.pct,0)/sec.length);
   let h=`<div class="rg-card"><div class="rgh"><span>Vistoria · Obra</span><b>${obraGlobal}%</b></div><div class="rg-body">`;
-  h+=`<div class="rg-big"><div class="rb"><div class="n">${total}</div><div class="l">Apartamentos</div></div>`+
-     `<div class="rb ok"><div class="n">${sec.reduce((s,x)=>s+x.done,0)}</div><div class="l">Etapas concluidas</div></div>`+
-     `<div class="rb warn"><div class="n">${sec.reduce((s,x)=>s+x.rv,0)}</div><div class="l">Em revistoria</div></div></div>`;
+  h+=`<div class="rg-charts">${donut(obraGlobal,"#6B8040","Concluído")}<div class="rg-stats"><div class="rg-big">`+
+     `<div class="rb"><div class="n">${total}</div><div class="l">Apartamentos</div></div>`+
+     `<div class="rb ok"><div class="n">${sec.reduce((s,x)=>s+x.done,0)}</div><div class="l">Etapas concluídas</div></div>`+
+     `<div class="rb warn"><div class="n">${sec.reduce((s,x)=>s+x.rv,0)}</div><div class="l">Em revistoria</div></div></div></div></div>`;
   sec.forEach(x=>{ h+=`<div class="pbar"><div class="pt"><span>${x.name}</span><b>${x.done}/${total} · ${x.pct}%</b></div><div class="track"><i style="width:${x.pct}%;background:${BARCLR(x.pct)}"></i></div></div>`; });
   h+=`<div class="rg-sub">Progresso por bloco</div><div class="rg-blocos">`;
-  BLOCOS.forEach(b=>{
-    let d=0,tt=0; PAVS.forEach(p=>APTS.forEach(a=>{const o=state.obra[kO(b,p,a)];FRENTES.forEach(f=>{tt++;if(f.done.includes(o[f.key]))d++;});}));
-    const pc=Math.round(d/tt*100);
-    h+=`<div class="brow"><span class="bn">${b}</span><span class="track"><i style="width:${pc}%"></i></span><span class="bv">${pc}%</span></div>`;
-  });
+  BLOCOS.forEach(b=>{let d=0,tt=0;PAVS.forEach(p=>APTS.forEach(a=>{const o=state.obra[kO(b,p,a)];FRENTES.forEach(f=>{tt++;if(f.done.includes(o[f.key]))d++;});}));const pc=Math.round(d/tt*100);h+=`<div class="brow"><span class="bn">${b}</span><span class="track"><i style="width:${pc}%"></i></span><span class="bv">${pc}%</span></div>`;});
   h+=`</div></div></div>`;
-  const cv=Object.values(state.cli),ct=cv.length;
-  const cc=x=>cv.filter(v=>v===x).length;
+  const cv=Object.values(state.cli),ct=cv.length;const cc=x=>cv.filter(v=>v===x).length;
   const nl=cc("nl"),ag=cc("ag"),ap=cc("ap"),rp=cc("rp"),rv=cc("rv");
   const vist=ap+rp+rv, aprovPct=vist?Math.round(ap/vist*100):0, entPct=Math.round((ct-nl)/ct*100);
   h+=`<div class="rg-card"><div class="rgh"><span>Vistoria · Cliente</span><b>${aprovPct}% aprov.</b></div><div class="rg-body">`;
-  h+=`<div class="rg-big"><div class="rb"><div class="n">${ct}</div><div class="l">Unidades</div></div>`+
+  h+=`<div class="rg-charts">${donut(aprovPct,"#2f9e5b","Aprovação")}<div class="rg-stats"><div class="rg-big">`+
+     `<div class="rb"><div class="n">${ct}</div><div class="l">Unidades</div></div>`+
      `<div class="rb ok"><div class="n">${ap}</div><div class="l">Aprovados</div></div>`+
-     `<div class="rb warn"><div class="n">${rv}</div><div class="l">Revistoria</div></div></div>`;
-  h+=`<div class="pbar"><div class="pt"><span>Aprovacao (vistoriados)</span><b>${ap}/${vist} · ${aprovPct}%</b></div><div class="track"><i style="width:${aprovPct}%;background:#2f9e5b"></i></div></div>`;
+     `<div class="rb warn"><div class="n">${rv}</div><div class="l">Revistoria</div></div></div></div></div>`;
   h+=`<div class="pbar"><div class="pt"><span>Liberadas p/ cliente</span><b>${ct-nl}/${ct} · ${entPct}%</b></div><div class="track"><i style="width:${entPct}%;background:${BARCLR(entPct)}"></i></div></div>`;
-  const mini=[["Nao liberado",nl],["Agendado",ag],["Aprovado",ap],["Reprovado",rp],["Revistoria",rv]];
+  const mini=[["Não liberado",nl],["Agendado",ag],["Aprovado",ap],["Reprovado",rp],["Revistoria",rv]];
   h+=`<div class="rg-mini">`+mini.map(m=>`<div class="m"><div class="mn">${m[1]}</div><div class="ml">${m[0]}</div></div>`).join("")+`</div>`;
   h+=`</div></div>`;
   grid.innerHTML=h;
@@ -809,13 +853,17 @@ document.getElementById("loginP").addEventListener("keydown",e=>{if(e.key==="Ent
 document.getElementById("btnLogout").onclick=()=>{try{localStorage.removeItem(LS_SESS);}catch(e){}currentUser=null;location.reload();};
 document.getElementById("accSave").onclick=saveUser;
 document.getElementById("logRefresh").onclick=loadLogs;
+document.getElementById("btnLogin").onclick=()=>document.getElementById("loginOv").classList.add("open");
+document.getElementById("loginClose").onclick=()=>document.getElementById("loginOv").classList.remove("open");
+document.getElementById("loginOv").addEventListener("click",e=>{if(e.target.id==="loginOv")e.currentTarget.classList.remove("open");});
+if(window.gsap){gsap.from(".header",{y:-38,opacity:0,duration:.5,ease:"power2.out"});gsap.from(".tabs .tab",{y:-8,opacity:0,duration:.4,stagger:.06,delay:.15,clearProps:"all"});}
 switchView("resumo");
 setSync("");
 bootAuth();
 </script>
 <div class="login-ov" id="loginOv">
   <div class="login-card">
-    <div class="lch"><h3>Vistorias · Alto do Jerivá</h3><p>Acesse com seu usuário e senha</p></div>
+    <div class="lch"><h3>Vistorias · Alto do Jerivá</h3><p>Acesse com seu usuário e senha</p><button class="login-x" id="loginClose" title="Fechar">×</button></div>
     <div class="lcb">
       <div class="fld"><label>Usuário</label><input id="loginU" autocomplete="username"></div>
       <div class="fld"><label>Senha</label><input id="loginP" type="password" autocomplete="current-password"></div>
