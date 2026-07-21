@@ -534,7 +534,7 @@ const kPV=(b,p)=>b+"|"+p;
 const dstr=v=>(""+(v||"")).slice(0,10);
 const kO=(b,p,a)=>b+"|"+p+"|"+a, kC=(b,p,a)=>b+"|"+p+"|"+a;
 function initState(){
-  const m={}; SEED.forEach(r=>m[r.bloco+"|"+r.pav]=r);
+  const m={}; if(!CONFIG.WEBAPP_URL) SEED.forEach(r=>m[r.bloco+"|"+r.pav]=r);
   BLOCOS.forEach(b=>PAVS.forEach(p=>{
     const r=m[b+"|"+p]||{};
     const base={acab:norm(r.acab),inst:norm(r.inst),qual:norm(r.qual),astec:norm(r.astec)};
