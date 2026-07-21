@@ -808,10 +808,13 @@ function payload(){const obra=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(
   const cronograma=[];BLOCOS.forEach(b=>PAVS.forEach(p=>{const pl=state.obraPlan[kPV(b,p)],lb=state.obraLib[kPV(b,p)];cronograma.push({bloco:b,pav:p,acab_plan:pl.acab,acab_lib:lb.acab,inst_plan:pl.inst,inst_lib:lb.inst,qual_plan:pl.qual,qual_lib:lb.qual,astec_plan:pl.astec,astec_lib:lb.astec});}));
   return{obra,cliente,cronograma};}
 async function push(){if(!CONFIG.WEBAPP_URL){setSync("");return;}try{await fetch(CONFIG.WEBAPP_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"write",user:currentUser?currentUser.usuario:"",data:payload()})});setSync("ok");}catch(e){setSync("err");}}
+function _blk(b){return (""+b).trim().toUpperCase();}
+function _pav(p){p=(""+p).trim();if(/t[ée]rreo/i.test(p)||p.toUpperCase()==="T")return "T";return p.replace(/°/g,"º");}
+function _apt(a){a=(""+a).trim();return /^\d+$/.test(a)?("0"+a).slice(-2):a;}
 async function load(silent){if(!CONFIG.WEBAPP_URL)return;if(!silent)setSync("busy");const _sy=window.scrollY;try{const r=await fetch(CONFIG.WEBAPP_URL+"?action=read");const j=await r.json();
-  if(j.obra)j.obra.forEach(r=>{const k=kO(r.bloco,r.pav,r.apto);if(state.obra[k])state.obra[k]={acab:norm(r.acab),inst:norm(r.inst),qual:norm(r.qual),astec:norm(r.astec)};});
-  if(j.cliente)j.cliente.forEach(r=>{const k=kC(r.bloco,r.pav,r.apto);if(k in state.cli){const t=(r.status||"").toLowerCase();state.cli[k]=t.includes("revist")?"rv":t.includes("aprov")?"ap":t.includes("reprov")?"rp":t.includes("agend")?"ag":"nl";state.cliDt[k]=(""+(r.status_dt||"")).slice(0,10);}});
-  if(j.cronograma)j.cronograma.forEach(r=>{const key=kPV(r.bloco,r.pav);if(state.obraPlan[key]){state.obraPlan[key]={acab:dstr(r.acab_plan),inst:dstr(r.inst_plan),qual:dstr(r.qual_plan),astec:dstr(r.astec_plan)};state.obraLib[key]={acab:dstr(r.acab_lib),inst:dstr(r.inst_lib),qual:dstr(r.qual_lib),astec:dstr(r.astec_lib)};}});
+  if(j.obra)j.obra.forEach(r=>{const k=kO(_blk(r.bloco),_pav(r.pav),_apt(r.apto));if(state.obra[k])state.obra[k]={acab:norm(r.acab),inst:norm(r.inst),qual:norm(r.qual),astec:norm(r.astec)};});
+  if(j.cliente)j.cliente.forEach(r=>{const k=kC(_blk(r.bloco),_pav(r.pav),_apt(r.apto));if(k in state.cli){const t=(r.status||"").toLowerCase();state.cli[k]=t.includes("revist")?"rv":t.includes("aprov")?"ap":t.includes("reprov")?"rp":t.includes("agend")?"ag":"nl";state.cliDt[k]=(""+(r.status_dt||"")).slice(0,10);}});
+  if(j.cronograma)j.cronograma.forEach(r=>{const key=kPV(_blk(r.bloco),_pav(r.pav));if(state.obraPlan[key]){state.obraPlan[key]={acab:dstr(r.acab_plan),inst:dstr(r.inst_plan),qual:dstr(r.qual_plan),astec:dstr(r.astec_plan)};state.obraLib[key]={acab:dstr(r.acab_lib),inst:dstr(r.inst_lib),qual:dstr(r.qual_lib),astec:dstr(r.astec_lib)};}});
   renderObra();renderCli();renderResumo();window.scrollTo(0,_sy);setSync("ok");if(!silent)toast("Dados carregados da planilha");}catch(e){setSync("err");toast("Falha ao conectar");}}
 
 /* ── MODALS ── */
