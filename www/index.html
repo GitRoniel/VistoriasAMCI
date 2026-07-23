@@ -342,6 +342,8 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .qapt .qd:active{transform:scale(.9)}
 .qapt .qnum{position:absolute;inset:0;display:grid;place-items:center;font-size:10px;font-weight:900;color:#12241a;pointer-events:none;text-shadow:0 0 3px #fff,0 0 4px #fff}
 .pavrow .pa .qapt{aspect-ratio:1.2/1}
+.tab-admin,.nav-admin{display:none!important}
+body.is-admin .tab-admin,body.is-admin .nav-admin{display:flex!important}
 </style>
 </head>
 <body>
@@ -501,20 +503,20 @@ const PAVS=["6º","5º","4º","3º","2º","1º","T"];
 const PAVL={"6º":"6º Pav","5º":"5º Pav","4º":"4º Pav","3º":"3º Pav","2º":"2º Pav","1º":"1º Pav","T":"Térreo"};
 const APTS=["01","02","03","04","05","06","07","08"];
 
-const STL={ni:"Não iniciado",ea:"Em andamento",lv:"Liberado p/ vistoria",rv:"Revistoria",ap:"Liberado / Aprovado",rp:"Reprovado",fz:"Finalizado"};
+const STL={ni:"Não iniciado",ea:"Em andamento",lv:"Liberado p/ Próxima Etapa",rv:"Pendências Revisórias",rev:"Revistoriado",fz:"Finalizado",ap:"Liberado / Aprovado",rp:"Reprovado"};
 const CLR_O={
   ni:{bg:"#eef1ec",tx:"#7a857a",bd:"#d9e0d7"}, ea:{bg:"#ffe6ad",tx:"#7a5600",bd:"#eec877"},
   lv:{bg:"#cfe2ff",tx:"#0b3d91",bd:"#a4c4f2"}, rv:{bg:"#ffd3a1",tx:"#8a3d00",bd:"#f0ac6c"},
-  ap:{bg:"#bce4c6",tx:"#12592b",bd:"#8bce9f"}, rp:{bg:"#f6c0b8",tx:"#7d1c12",bd:"#e6968b"},
-  fz:{bg:"#1F3D38",tx:"#fff",bd:"#1F3D38"}
+  rev:{bg:"#bce4c6",tx:"#12592b",bd:"#8bce9f"}, fz:{bg:"#1F3D38",tx:"#fff",bd:"#1F3D38"},
+  ap:{bg:"#bce4c6",tx:"#12592b",bd:"#8bce9f"}, rp:{bg:"#f6c0b8",tx:"#7d1c12",bd:"#e6968b"}
 };
-const FRONT_FLOW=["ni","ea","lv","rv","fz"];
-const CHECK_FLOW=["ni","ea","ap","rv","rp","fz"];
+const FLOW=["ni","ea","lv","rv","rev","fz"];
+const FRONT_FLOW=FLOW, CHECK_FLOW=FLOW;
 const FRENTES=[
-  {key:"acab",step:"Etapa 1",name:"Acabamento",flow:FRONT_FLOW,done:["lv","fz"]},
-  {key:"inst",step:"Etapa 1",name:"Instalações",flow:FRONT_FLOW,done:["lv","fz"]},
-  {key:"qual",step:"Etapa 2",name:"Qualidade",flow:CHECK_FLOW,done:["ap","fz"]},
-  {key:"astec",step:"Etapa 3",name:"Assist. Técnica",flow:CHECK_FLOW,done:["ap","fz"]},
+  {key:"acab",step:"Etapa 1",name:"Acabamento",flow:FLOW,done:["lv","rev","fz"]},
+  {key:"inst",step:"Etapa 1",name:"Instalações",flow:FLOW,done:["lv","rev","fz"]},
+  {key:"qual",step:"Etapa 2",name:"Qualidade",flow:FLOW,done:["lv","rev","fz"]},
+  {key:"astec",step:"Etapa 3",name:"Assist. Técnica",flow:FLOW,done:["lv","rev","fz"]},
 ];
 const CLL={nl:"Não liberado",ag:"Agendado",ap:"Aprovado",rp:"Reprovado",rv:"Revistoria"};
 const CLR_C={nl:{bg:"#fff",tx:"#9aa39a",bd:"#c7ccbf"},ag:{bg:"#f2c14e",tx:"#5a4409",bd:"#d9a92f"},ap:{bg:"#2f9e5b",tx:"#fff",bd:"#268a4d"},rp:{bg:"#d24437",tx:"#fff",bd:"#b9382c"},rv:{bg:"#e8842a",tx:"#fff",bd:"#c96a1a"}};
@@ -522,9 +524,16 @@ const CLI_FLOW=["nl","ag","ap","rp","rv"];
 const NIVL={admin:"Admin",visitante:"Visitante",acab:"Acabamento",inst:"Instalações",qual:"Qualidade",astec:"Assist. Técnica"};
 
 function norm(t){t=(t||"").toString().trim().toLowerCase();
-  if(t.includes("finaliz"))return"fz"; if(t.includes("revist"))return"rv"; if(t.includes("reprov"))return"rp";
-  if(t.includes("liberado p")||t.includes("lib. p")||t.includes("lib p"))return t.includes("revist")?"rv":"lv";
-  if(t==="liberado"||t.includes("aprov"))return"ap"; if(t.includes("andamento"))return"ea"; return"ni";}
+  if(t.includes("finaliz"))return"fz";
+  if(t.includes("revistoriado"))return"rev";
+  if(t.includes("pend"))return"rv";
+  if(t.includes("revist"))return"rv";
+  if(t.includes("reprov"))return"rv";
+  if(t.includes("próxima")||t.includes("proxima"))return"lv";
+  if(t.includes("liberado p")||t.includes("lib. p")||t.includes("lib p"))return"lv";
+  if(t==="liberado"||t.includes("aprov"))return"lv";
+  if(t.includes("andamento"))return"ea";
+  return"ni";}
 
 const SEED=[{"bloco": "A", "pav": "6º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "5º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "4º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "3º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Liberado", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "2º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Revistoria", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "1º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Revistoria", "astec": "Não Iniciado"}, {"bloco": "A", "pav": "T", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Revistoria", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "6º", "acab": "Liberado p/ Vistoria", "inst": "Liberado p/ Vistoria", "qual": "Em Andamento", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "5º", "acab": "Em Andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "4º", "acab": "Em andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "3º", "acab": "Em andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "2º", "acab": "Em Andamento", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "1º", "acab": "Não Iniciado", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "C", "pav": "T", "acab": "Não Iniciado", "inst": "Liberado p/ Vistoria", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "E", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "G", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "H", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "F", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "D", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "6º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "5º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "4º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "3º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "2º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "1º", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}, {"bloco": "B", "pav": "T", "acab": "Não Iniciado", "inst": "Não Iniciado", "qual": "Não Iniciado", "astec": "Não Iniciado"}];
 
@@ -574,7 +583,7 @@ function obraSummaryHTML(){
     const pct=Math.round(done/448*100);
     const isFront=f.key==="acab"||f.key==="inst";
     const col=isFront?"#0b6fd4":"#2f9e5b";
-    return `<div class="vg-card" style="border-left-color:${col}"><div class="vg-top"><span class="vg-dot" style="background:${col}"></span><span class="vg-name">${f.name}</span><span class="vg-pct">${pct}%</span></div><div class="vg-bar"><i style="width:${pct}%;background:${col}"></i></div><div class="vg-sub">${done}/448 ${isFront?"liberados":"aprovados"}</div></div>`;
+    return `<div class="vg-card" style="border-left-color:${col}"><div class="vg-top"><span class="vg-dot" style="background:${col}"></span><span class="vg-name">${f.name}</span><span class="vg-pct">${pct}%</span></div><div class="vg-bar"><i style="width:${pct}%;background:${col}"></i></div><div class="vg-sub">${done}/448 liberados</div></div>`;
   }).join("")+'</div>';
 }
 function buildObraGeral(){
@@ -617,7 +626,7 @@ function updateAuthUI(){
   document.getElementById("userChip").style.display=inl?"flex":"none";
   document.getElementById("btnLogout").style.display=inl?"grid":"none";
   const admin=inl&&currentUser.nivel==="admin";
-  document.querySelectorAll(".tab-admin,.nav-admin").forEach(el=>el.style.display=admin?"":"none");
+  document.body.classList.toggle("is-admin",admin);
   if(inl)document.getElementById("userName").textContent=(currentUser.nome||currentUser.usuario)+" · "+(NIVL[currentUser.nivel]||currentUser.nivel);
 }
 function blocoSelector(kind){
@@ -673,8 +682,8 @@ function renderObra(){
   document.getElementById("obraKpis").innerHTML=`
     <div class="kbox"><div class="kl">${f.name}</div><div class="kv">${cnt("ni")}</div><div class="kl" style="letter-spacing:.2px;text-transform:none;color:#9aa39a">não iniciados</div></div>
     <div class="kbox warn"><div class="kl">Em andamento</div><div class="kv">${cnt("ea")}</div></div>
-    <div class="kbox ${isFront?"blue":"ok"}"><div class="kl">${isFront?"Liberados":"Aprovados"}</div><div class="kv">${isFront?cnt("lv"):cnt("ap")}</div></div>
-    <div class="kbox warn"><div class="kl">Revistoria</div><div class="kv">${cnt("rv")}</div></div>
+    <div class="kbox blue"><div class="kl">Liberados</div><div class="kv">${cnt("lv")}</div></div>
+    <div class="kbox warn"><div class="kl">Pendências</div><div class="kv">${cnt("rv")}</div></div>
     <div class="kbox ok"><div class="kl">Concluído</div><div class="kv">${Math.round(doneN/448*100)}<small>%</small></div></div>`;
   // legend
   document.getElementById("obraLegend").innerHTML=[...new Set([...FRONT_FLOW,...CHECK_FLOW])].map(c=>{
@@ -786,6 +795,7 @@ addEventListener("scroll",closePop,true);
 
 /* ── TABS ── */
 function switchView(v){
+  if(v==="acessos" && !(currentUser&&currentUser.nivel==="admin")){toast("Acesso restrito a administradores");v="resumo";}
   obraBlk="ALL"; cliBlk="ALL";
   document.querySelectorAll(".tab,.navbtn").forEach(t=>t.classList.toggle("active",t.dataset.view===v));
   document.querySelectorAll(".view").forEach(s=>s.classList.toggle("active",s.id==="v-"+v));
@@ -825,7 +835,7 @@ let tt; function toast(m){const t=document.getElementById("toast");t.textContent
 
 /* ── AUTH / ACESSOS / RESUMO ── */
 const LS_URL="vaj_url", LS_SESS="vaj_sess";
-let currentUser=null;
+let currentUser=null, authPass="";
 function isAdmin(){ return !!(currentUser&&currentUser.nivel==="admin"); }
 function canEditFrente(fr){ if(!CONFIG.WEBAPP_URL) return true; if(!currentUser) return false; return currentUser.nivel==="admin"||currentUser.nivel===fr; }
 function canEditCli(){ if(!CONFIG.WEBAPP_URL) return true; return isAdmin(); }
@@ -845,8 +855,8 @@ async function doLogin(){
   if(!u||!p){err.textContent="Preencha usuario e senha.";err.classList.add("show");return;}
   try{
     const j=await gsGet({action:"login",u:u,p:p});
-    if(j&&j.ok){ currentUser={usuario:u,nivel:(j.nivel||"visitante").toLowerCase(),nome:j.nome||u};
-      try{localStorage.setItem(LS_SESS,JSON.stringify(Object.assign({},currentUser,{ts:Date.now()})));}catch(e){}
+    if(j&&j.ok){ currentUser={usuario:u,nivel:(j.nivel||"visitante").toLowerCase(),nome:j.nome||u}; authPass=p;
+      try{localStorage.setItem(LS_SESS,JSON.stringify(Object.assign({},currentUser,{pass:p,ts:Date.now()})));}catch(e){}
       afterLogin(); }
     else if(j&&j.inactive){ err.textContent="Usuario inativo. Fale com o administrador."; err.classList.add("show"); }
     else{ err.textContent="Usuario ou senha invalidos."; err.classList.add("show"); }
@@ -861,13 +871,13 @@ function afterLogin(){
 }
 function bootAuth(){
   let raw=null; try{raw=localStorage.getItem(LS_SESS);}catch(e){}
-  if(raw){ try{ const s=JSON.parse(raw); if(Date.now()-s.ts < 43200000){ currentUser={usuario:s.usuario,nivel:s.nivel,nome:s.nome}; afterLogin(); return; } }catch(e){} }
+  if(raw){ try{ const s=JSON.parse(raw); if(Date.now()-s.ts < 43200000){ currentUser={usuario:s.usuario,nivel:s.nivel,nome:s.nome}; authPass=s.pass||""; afterLogin(); return; } }catch(e){} }
   currentUser=null; updateAuthUI();
   if(CONFIG.WEBAPP_URL){ setSync("busy"); load(); renderResumo(); }
 }
 async function loadUsers(){
   if(!CONFIG.WEBAPP_URL||!(currentUser&&currentUser.nivel==="admin"))return;
-  try{ const j=await gsGet({action:"listUsers"}); const body=document.getElementById("accBody");
+  try{ const j=await gsGet({action:"listUsers",au:currentUser.usuario,ap:authPass}); const body=document.getElementById("accBody");
     const rows=(j.users||[]);
     body.innerHTML=rows.length?rows.map(u=>{
       const niv=String(u.nivel||"visitante").toLowerCase();
@@ -886,14 +896,15 @@ async function loadUsers(){
 async function saveUser(){
   const u=document.getElementById("accU").value.trim(),p=document.getElementById("accP").value,nome=document.getElementById("accNome").value.trim(),niv=document.getElementById("accNiv").value;
   if(!u){toast("Informe o usuario");return;}
-  try{ const j=await gsGet({action:"saveUser",u:u,p:p,nome:nome,nivel:niv});
+  if(!(currentUser&&currentUser.nivel==="admin")){toast("Somente administrador");return;}
+  try{ const j=await gsGet({action:"saveUser",u:u,p:p,nome:nome,nivel:niv,au:currentUser.usuario,ap:authPass});
     if(j&&j.ok){toast("Usuario salvo");sendLog("Cadastro de acesso: "+u+" ("+niv+")");document.getElementById("accP").value="";loadUsers();}
     else toast("Erro ao salvar");
   }catch(e){toast("Falha ao salvar");}
 }
 async function loadLogs(){
   if(!CONFIG.WEBAPP_URL||!(currentUser&&currentUser.nivel==="admin"))return;
-  try{ const j=await gsGet({action:"listLogs"}); const el=document.getElementById("logList"); if(!el)return;
+  try{ const j=await gsGet({action:"listLogs",au:currentUser.usuario,ap:authPass}); const el=document.getElementById("logList"); if(!el)return;
     const ls=(j.logs||[]);
     el.innerHTML=ls.length?ls.map(l=>`<div class="log-item"><span class="lt">${l.data||""}</span><span class="lu">${l.usuario||""}</span><span class="ld">${l.detalhe||l.acao||""}</span></div>`).join(""):`<div class="log-item"><span class="ld" style="color:var(--text-light)">Sem registros.</span></div>`;
   }catch(e){}
@@ -908,7 +919,7 @@ function renderResumo(){
   h+=`<div class="rg-charts">${donut(obraGlobal,"#6B8040","Concluído")}<div class="rg-stats"><div class="rg-big">`+
      `<div class="rb"><div class="n">${total}</div><div class="l">Apartamentos</div></div>`+
      `<div class="rb ok"><div class="n">${sec.reduce((s,x)=>s+x.done,0)}</div><div class="l">Etapas concluídas</div></div>`+
-     `<div class="rb warn"><div class="n">${sec.reduce((s,x)=>s+x.rv,0)}</div><div class="l">Em revistoria</div></div></div></div></div>`;
+     `<div class="rb warn"><div class="n">${sec.reduce((s,x)=>s+x.rv,0)}</div><div class="l">Pendências</div></div></div></div></div>`;
   sec.forEach(x=>{ h+=`<div class="pbar"><div class="pt"><span>${x.name}</span><b>${x.done}/${total} · ${x.pct}%</b></div><div class="track"><i style="width:${x.pct}%;background:${BARCLR(x.pct)}"></i></div></div>`; });
   h+=`<div class="rg-sub">Progresso por bloco</div><div class="rg-blocos">`;
   BLOCOS.forEach(b=>{let d=0,tt=0;PAVS.forEach(p=>APTS.forEach(a=>{const o=state.obra[kO(b,p,a)];FRENTES.forEach(f=>{tt++;if(f.done.includes(o[f.key]))d++;});}));const pc=Math.round(d/tt*100);h+=`<div class="brow"><span class="bn">${b}</span><span class="track"><i style="width:${pc}%"></i></span><span class="bv">${pc}%</span></div>`;});
