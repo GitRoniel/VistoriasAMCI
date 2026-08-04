@@ -497,8 +497,24 @@ body.is-admin .tab-admin,body.is-admin .nav-admin{display:flex!important}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 const CONFIG={WEBAPP_URL:"https://script.google.com/macros/s/AKfycbzHUs5Jx5Q29z5gp6irnZqqZTVi10ZGgoanxiRwjrpyUDo-lzSXbXQs2NXFwTqPnp5B/exec"};
+/* fetch resiliente: timeout de 15s + 3 tentativas com espera crescente.
+   Sem isso, uma unica falha de rede deixava o usuario travado ate o proximo poll. */
+async function fetchJSON(url,tries){
+  tries=tries||3; let err;
+  for(let i=0;i<tries;i++){
+    if(i) await new Promise(r=>setTimeout(r,600*Math.pow(2,i-1)));
+    const ac=new AbortController(); const to=setTimeout(()=>ac.abort(),15000);
+    try{
+      const r=await fetch(url,{signal:ac.signal});
+      clearTimeout(to);
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return await r.json();
+    }catch(e){ clearTimeout(to); err=e; console.warn("[SYNC] tentativa "+(i+1)+"/"+tries+" falhou:",e.message||e); }
+  }
+  throw err;
+}
 let _pre=null;
-if(CONFIG.WEBAPP_URL){ _pre=fetch(CONFIG.WEBAPP_URL+"?action=read").then(r=>r.json()); _pre.catch(()=>{}); }
+if(CONFIG.WEBAPP_URL){ _pre=fetchJSON(CONFIG.WEBAPP_URL+"?action=read"); _pre.catch(()=>{}); }
 const BLOCOS=["A","C","E","G","H","F","D","B"];
 const PAVS=["6º","5º","4º","3º","2º","1º","T"];
 const PAVL={"6º":"6º Pav","5º":"5º Pav","4º":"4º Pav","3º":"3º Pav","2º":"2º Pav","1º":"1º Pav","T":"Térreo"};
@@ -813,7 +829,17 @@ document.querySelectorAll(".tab,.navbtn").forEach(t=>t.onclick=()=>switchView(t.
 function setSync(m){const d=document.getElementById("syncDot");d.className="sync-dot"+(m?" "+m:"");}
 let saveTimer=null;
 function scheduleSave(){if(!CONFIG.WEBAPP_URL)return;clearTimeout(saveTimer);setSync("busy");saveTimer=setTimeout(push,900);}
-function setCell(t,b,pav,a,field,value,detalhe){if(!CONFIG.WEBAPP_URL)return;setSync("busy");const q="action=set&t="+t+"&b="+encodeURIComponent(b)+"&pav="+encodeURIComponent(pav)+"&a="+encodeURIComponent(a||"")+"&field="+encodeURIComponent(field)+"&value="+encodeURIComponent(value==null?"":value)+"&user="+encodeURIComponent(currentUser?currentUser.usuario:"")+"&detalhe="+encodeURIComponent(detalhe||"");fetch(CONFIG.WEBAPP_URL+"?"+q).then(()=>setSync("ok")).catch(()=>setSync("err"));}
+function setCell(t,b,pav,a,field,value,detalhe){
+  if(!CONFIG.WEBAPP_URL)return;
+  setSync("busy");
+  const q="action=set&t="+t+"&b="+encodeURIComponent(b)+"&pav="+encodeURIComponent(pav)+"&a="+encodeURIComponent(a||"")+"&field="+encodeURIComponent(field)+"&value="+encodeURIComponent(value==null?"":value)+"&user="+encodeURIComponent(currentUser?currentUser.usuario:"")+"&detalhe="+encodeURIComponent(detalhe||"");
+  fetchJSON(CONFIG.WEBAPP_URL+"?"+q)
+    .then(j=>{
+      if(j&&j.ok){ setSync("ok"); _lastRaw=""; }          // forca o proximo poll a repintar
+      else { setSync("err"); toast(j&&j.busy?"Planilha ocupada, tente de novo":"Nao foi possivel salvar"); }
+    })
+    .catch(()=>{ setSync("err"); toast("Sem conexao - alteracao NAO salva"); });
+}
 function payload(){const obra=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>{const s=state.obra[kO(b,p,a)];obra.push({bloco:b,pav:p,apto:a,acab:STL[s.acab],inst:STL[s.inst],qual:STL[s.qual],astec:STL[s.astec]});})));
   const cliente=[];BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>cliente.push({bloco:b,pav:p,apto:a,status:CLL[state.cli[kC(b,p,a)]],status_dt:state.cliDt[kC(b,p,a)]}))));
   const cronograma=[];BLOCOS.forEach(b=>PAVS.forEach(p=>{const pl=state.obraPlan[kPV(b,p)],lb=state.obraLib[kPV(b,p)];cronograma.push({bloco:b,pav:p,acab_plan:pl.acab,acab_lib:lb.acab,inst_plan:pl.inst,inst_lib:lb.inst,qual_plan:pl.qual,qual_lib:lb.qual,astec_plan:pl.astec,astec_lib:lb.astec});}));
@@ -835,7 +861,7 @@ async function load(silent){
   try{
     let j;
     if(_pre){ j=await _pre; _pre=null; }
-    else { const r=await fetch(CONFIG.WEBAPP_URL+"?action=read"); j=await r.json(); }
+    else { j=await fetchJSON(CONFIG.WEBAPP_URL+"?action=read"); }
     const raw=JSON.stringify(j);
     if(raw===_lastRaw){ setSync("ok"); if(!silent)toast("Dados atualizados"); return; }
     _lastRaw=raw;
@@ -861,7 +887,7 @@ function canEditCli(){ if(!CONFIG.WEBAPP_URL) return true; return isAdmin(); }
 function canEditPlan(){ if(!CONFIG.WEBAPP_URL) return true; return isAdmin(); }
 async function gsGet(params){
   const q=Object.entries(params).map(([k,v])=>k+"="+encodeURIComponent(v)).join("&");
-  const r=await fetch(CONFIG.WEBAPP_URL+"?"+q); return r.json();
+  return fetchJSON(CONFIG.WEBAPP_URL+"?"+q);
 }
 function sendLog(detalhe){
   if(!CONFIG.WEBAPP_URL||!currentUser) return;
@@ -975,7 +1001,13 @@ if(window.gsap){gsap.from(".header",{y:-38,opacity:0,duration:.5,ease:"power2.ou
 switchView("resumo");
 setSync("");
 bootAuth();
-setInterval(()=>{const _p=document.getElementById("pop");if(_p&&_p.classList.contains("open"))return;if(currentUser)load(true);},30000);
+setInterval(()=>{
+  if(document.hidden)return;                                   // aba em segundo plano nao consome execucao
+  const _p=document.getElementById("pop");
+  if(_p&&_p.classList.contains("open"))return;                 // nao repinta com o popup aberto
+  if(currentUser)load(true);
+},30000);
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&currentUser)load(true); });
 </script>
 </body>
 </html>
