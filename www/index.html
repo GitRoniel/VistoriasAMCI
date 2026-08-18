@@ -271,8 +271,8 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .modetog button{flex:1;padding:8px 6px;border-radius:7px;font-size:11px;font-weight:800;letter-spacing:.3px;color:var(--text-light);transition:.14s}
 .modetog button.active{background:#fff;color:var(--moss);box-shadow:0 1px 4px rgba(31,61,56,.12)}
 /* CLIENTE · filtros da lista */
-.clif{background:#fafcf9;border:1px solid var(--border);border-radius:9px;padding:10px 11px;margin-bottom:11px}
-.clif-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.clif{background:#fafcf9;border:1px solid var(--border);border-radius:9px;padding:9px 10px;margin-bottom:9px}
+.clif-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px}
 .clif-row:last-child{margin-bottom:0}
 .clif-lbl{font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--moss);white-space:nowrap}
 .clif-chips{display:flex;gap:5px;flex-wrap:wrap}
@@ -339,10 +339,13 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .pop .popdate{border-top:1px solid var(--border);margin-top:5px;padding:8px 8px 4px}
 .pop .popdate label{display:block;font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--text-light);margin-bottom:4px}
 .pop .popdate input,.pop .popdate textarea{width:100%;padding:7px 9px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;color:var(--text);font-family:inherit;resize:vertical}
-.ctbl{border-collapse:separate;border-spacing:0;width:100%;font-size:11px;min-width:600px}
-.ctbl thead th{position:sticky;top:0;background:var(--moss);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:8px 8px;text-align:left;z-index:2}
-.ctbl td.cap{font-weight:800;color:var(--moss);white-space:nowrap;padding:6px 9px;background:#f4f7f2;border-bottom:1px solid var(--border);position:sticky;left:0;z-index:1}
-.ctbl td.cstat{padding:6px 9px;border-bottom:1px solid #eef2ea;border-left:1px solid #eef2ea;cursor:pointer;transition:.1s;min-width:118px}
+.ctbl{border-collapse:separate;border-spacing:0;width:100%;font-size:11px;min-width:560px;table-layout:auto}
+.ctbl thead th{position:sticky;top:0;background:var(--moss);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:7px 8px;text-align:left;z-index:2;white-space:nowrap}
+.ctbl td{padding:5px 8px;border-bottom:1px solid #eef2ea;white-space:nowrap}
+.ctbl td.cap{font-weight:800;color:var(--moss);padding:5px 9px;background:#f4f7f2;border-bottom:1px solid var(--border);position:sticky;left:0;z-index:1}
+.ctbl td.cunit{font-weight:700;color:var(--text);letter-spacing:.3px}
+.ctbl th.cw-b,.ctbl th.cw-u,.ctbl th.cw-d,.ctbl th.cw-h{width:1%}
+.ctbl td.cstat{padding:5px 9px;border-bottom:1px solid #eef2ea;border-left:1px solid #eef2ea;cursor:pointer;transition:.1s;white-space:nowrap}
 .ctbl td.cstat:hover{filter:brightness(.95)}
 .ctbl td.cstat .cs-l{display:block;font-weight:800;font-size:11px;line-height:1.2}
 .ctbl td.cstat .cs-d{display:block;font-size:9px;font-weight:700;opacity:.85;margin-top:1px}
@@ -541,11 +544,12 @@ body.is-admin .tab-admin,body.is-admin .nav-admin{display:flex!important}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
-const CONFIG={WEBAPP_URL:"https://script.google.com/macros/s/AKfycbxxrtJCLKz9gW9T3Q9qrnhIyY6AmCRss6PxEB8lW9LYCTyVzNRz-Q-ZJTnAXBCD2zwn/exec"};
+const CONFIG={WEBAPP_URL:"https://script.google.com/macros/s/AKfycbzHUs5Jx5Q29z5gp6irnZqqZTVi10ZGgoanxiRwjrpyUDo-lzSXbXQs2NXFwTqPnp5B/exec"};
 const BLOCOS=["A","C","E","G","H","F","D","B"];
 const PAVS=["6º","5º","4º","3º","2º","1º","T"];
 const PAVL={"6º":"6º Pav","5º":"5º Pav","4º":"4º Pav","3º":"3º Pav","2º":"2º Pav","1º":"1º Pav","T":"Térreo"};
 const APTS=["01","02","03","04","05","06","07","08"];
+function unitCode_(p,a){ return (p==="T"?"T":p.replace("º","")) + a; }
 
 const STL={ni:"Não iniciado",ea:"Em andamento",lv:"Liberado p/ Próxima Etapa",rv:"Pendências Revisórias",rev:"Revistoriado",fz:"Finalizado",ap:"Liberado / Aprovado",rp:"Reprovado"};
 const CLR_O={
@@ -566,6 +570,7 @@ const CLL={na:"Não agendado",ag:"Agendado",rm:"Remarcado",rv:"Revistoria",ap:"A
 const CLR_C={na:{bg:"#fff",tx:"#9aa39a",bd:"#c7ccbf"},ag:{bg:"#f2c14e",tx:"#5a4409",bd:"#d9a92f"},rm:{bg:"#ff9e57",tx:"#7a3300",bd:"#e6863f"},rv:{bg:"#e8842a",tx:"#fff",bd:"#c96a1a"},ap:{bg:"#2f9e5b",tx:"#fff",bd:"#268a4d"}};
 const CLI_FLOW=["na","ag","rm","rv","ap"];
 function normCli(t){t=(t||"").toString().trim().toLowerCase();
+  if(t.includes("não agend")||t.includes("nao agend"))return"na";
   if(t.includes("aprov"))return"ap";
   if(t.includes("revist"))return"rv";
   if(t.includes("remarc"))return"rm";
@@ -606,7 +611,11 @@ function initState(){
 
 /* state */
 let obraFrente="acab", obraBlk="ALL", cliBlk="ALL", obraMode="frente";
+<<<<<<< HEAD
 let cliMode="mapa", cliFilt={status:"ALL",bloco:"ALL",dtIni:"",dtFim:"",q:"",unid:""};
+=======
+let cliMode="mapa", cliFilt={status:[],bloco:"ALL",dtIni:"",dtFim:"",q:""};
+>>>>>>> d68b5943982cc50e992f20a4a672af7ad34505b8
 let isMobile=matchMedia("(max-width:720px)").matches;
 
 /* ── shared grid builder ── */
@@ -795,7 +804,7 @@ function ensureCliFilters(){
     <div class="clif-row">
       <span class="clif-lbl">Status</span>
       <div class="clif-chips" id="clifStatus">${["ALL",...CLI_FLOW].map(c=>
-        `<button class="chip ${cliFilt.status===c?"active":""}" data-fstatus="${c}">${c==="ALL"?"Todos":CLL[c]}</button>`).join("")}</div>
+        `<button class="chip ${c==="ALL"?(cliFilt.status.length===0?"active":""):(cliFilt.status.includes(c)?"active":"")}" data-fstatus="${c}">${c==="ALL"?"Todos":CLL[c]}</button>`).join("")}</div>
       <span class="clif-count" id="clifCount"></span>
     </div>
     <div class="clif-row">
@@ -811,14 +820,30 @@ function ensureCliFilters(){
       <button class="btn g" id="clifClear" type="button">Limpar filtros</button>
       <button class="btn g" id="clifPrint" type="button">🖨️ Imprimir</button>
     </div>`;
-  el.querySelectorAll("[data-fstatus]").forEach(b=>b.onclick=()=>{cliFilt.status=b.dataset.fstatus;el.querySelectorAll("[data-fstatus]").forEach(x=>x.classList.toggle("active",x===b));renderCliList();});
+  el.querySelectorAll("[data-fstatus]").forEach(b=>b.onclick=()=>{
+    const c=b.dataset.fstatus;
+    if(c==="ALL"){ cliFilt.status=[]; }
+    else{
+      const i=cliFilt.status.indexOf(c);
+      if(i>=0)cliFilt.status.splice(i,1); else cliFilt.status.push(c);
+    }
+    el.querySelectorAll("[data-fstatus]").forEach(x=>{
+      const xc=x.dataset.fstatus;
+      x.classList.toggle("active", xc==="ALL"?cliFilt.status.length===0:cliFilt.status.includes(xc));
+    });
+    renderCliList();
+  });
   el.querySelectorAll("[data-fbloco]").forEach(b=>b.onclick=()=>{cliFilt.bloco=b.dataset.fbloco;el.querySelectorAll("[data-fbloco]").forEach(x=>x.classList.toggle("active",x===b));renderCliList();});
   el.querySelector("#clifDtIni").oninput=e=>{cliFilt.dtIni=e.target.value;renderCliList();};
   el.querySelector("#clifDtFim").oninput=e=>{cliFilt.dtFim=e.target.value;renderCliList();};
   el.querySelector("#clifQ").oninput=e=>{cliFilt.q=e.target.value;renderCliList();};
+<<<<<<< HEAD
   el.querySelector("#clifUnid").oninput=e=>{cliFilt.unid=e.target.value;renderCliList();};
   el.querySelector("#clifClear").onclick=()=>{cliFilt={status:"ALL",bloco:"ALL",dtIni:"",dtFim:"",q:"",unid:""};el.dataset.built="";ensureCliFilters();renderCliList();};
   el.querySelector("#clifPrint").onclick=printCliList;
+=======
+  el.querySelector("#clifClear").onclick=()=>{cliFilt={status:[],bloco:"ALL",dtIni:"",dtFim:"",q:""};el.dataset.built="";ensureCliFilters();renderCliList();};
+>>>>>>> d68b5943982cc50e992f20a4a672af7ad34505b8
 }
 /** Monta a lista de unidades já filtrada e ordenada (usada pela tabela em
  *  tela e pela impressão, pra nunca ficarem dessincronizadas).
@@ -829,7 +854,7 @@ function getCliFilteredRows(){
   BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>{
     const k=kC(b,p,a); rows.push({b,p,a,code:state.cli[k],info:state.cliInfo[k]||{}});
   })));
-  if(cliFilt.status!=="ALL") rows=rows.filter(r=>r.code===cliFilt.status);
+  if(cliFilt.status.length) rows=rows.filter(r=>cliFilt.status.includes(r.code));
   if(cliFilt.bloco!=="ALL") rows=rows.filter(r=>r.b===cliFilt.bloco);
   if(cliFilt.dtIni) rows=rows.filter(r=>r.info.data_vistoria && r.info.data_vistoria>=cliFilt.dtIni);
   if(cliFilt.dtFim) rows=rows.filter(r=>r.info.data_vistoria && r.info.data_vistoria<=cliFilt.dtFim);
@@ -857,13 +882,12 @@ function renderCliList(){
   const rows=getCliFilteredRows();
   const cnt=document.getElementById("clifCount"); if(cnt)cnt.textContent=rows.length+" unidade(s)";
   if(!rows.length){ wrap.innerHTML='<div class="clif-empty">Nenhuma unidade encontrada com esses filtros.</div>'; return; }
-  let h='<div class="gridscroll"><table class="ctbl"><thead><tr><th>Bloco</th><th>Pav</th><th>Apto</th><th>Cliente</th><th>Data</th><th>Horário</th><th>Responsável</th><th>Status</th><th>Rev.</th><th>Obs.</th></tr></thead><tbody>';
+  let h='<div class="gridscroll"><table class="ctbl"><thead><tr><th class="cw-b">Bloco</th><th class="cw-u">Unidade</th><th>Cliente</th><th class="cw-d">Data</th><th class="cw-h">Horário</th><th>Responsável</th><th class="cw-s">Status</th><th class="cw-d">Rev.</th><th>Obs.</th></tr></thead><tbody>';
   rows.forEach(r=>{
     const s=CLR_C[r.code]||CLR_C.na, i=r.info;
     h+=`<tr>
       <td class="cap">${r.b}</td>
-      <td>${PAVL[r.p]}</td>
-      <td>${r.a}</td>
+      <td class="cunit" title="${PAVL[r.p]} · Apto ${r.a}">${unitCode_(r.p,r.a)}</td>
       <td>${esc(i.cliente)||"—"}</td>
       <td>${i.data_vistoria?fmtDate(i.data_vistoria):"—"}</td>
       <td>${esc(i.horario_vistoria)||"—"}</td>
