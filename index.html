@@ -318,16 +318,19 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .pop .popdate label{display:block;font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--text-light);margin-bottom:4px}
 .pop .popdate input,.pop .popdate textarea{width:100%;padding:7px 9px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;color:var(--text);font-family:inherit;resize:vertical}
 .ctbl{border-collapse:separate;border-spacing:0;width:100%;font-size:11px;min-width:560px;table-layout:auto}
-.ctbl thead th{position:sticky;top:0;background:var(--moss);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:7px 8px;text-align:left;z-index:2;white-space:nowrap}
-.ctbl td{padding:5px 8px;border-bottom:1px solid #eef2ea;white-space:nowrap}
-.ctbl td.cap{font-weight:800;color:var(--moss);padding:5px 9px;background:#f4f7f2;border-bottom:1px solid var(--border);position:sticky;left:0;z-index:1}
+.ctbl thead th{position:sticky;top:0;background:var(--moss);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:7px 8px;text-align:center;z-index:2;white-space:nowrap}
+.ctbl thead th.th-cli,.ctbl thead th.th-obs{text-align:left}
+.ctbl td{padding:5px 8px;border-bottom:1px solid #eef2ea;white-space:nowrap;text-align:center}
+.ctbl td.cap{font-weight:800;color:var(--moss);padding:5px 9px;background:#f4f7f2;border-bottom:1px solid var(--border);position:sticky;left:0;z-index:1;text-align:center}
 .ctbl td.cunit{font-weight:700;color:var(--text);letter-spacing:.3px}
+.ctbl td.ccli{text-align:left}
 .ctbl th.cw-b,.ctbl th.cw-u,.ctbl th.cw-d,.ctbl th.cw-h{width:1%}
-.ctbl td.cstat{padding:5px 9px;border-bottom:1px solid #eef2ea;border-left:1px solid #eef2ea;cursor:pointer;transition:.1s;white-space:nowrap}
+.ctbl td.cstat{padding:5px 9px;border-bottom:1px solid #eef2ea;border-left:1px solid #eef2ea;cursor:pointer;transition:.1s;white-space:nowrap;text-align:center}
 .ctbl td.cstat:hover{filter:brightness(.95)}
 .ctbl td.cstat .cs-l{display:block;font-weight:800;font-size:11px;line-height:1.2}
 .ctbl td.cstat .cs-d{display:block;font-size:9px;font-weight:700;opacity:.85;margin-top:1px}
 .ctbl tbody tr:hover td.cap{background:#e9efe6}
+.ctbl td.clif-obs{text-align:left}
 .rg-charts{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
 .rg-charts .rg-stats{flex:1;min-width:150px}
 .donut{flex-shrink:0}
@@ -845,13 +848,13 @@ function renderCliList(){
   cliListLastRows=rows;
   const cnt=document.getElementById("clifCount"); if(cnt)cnt.textContent=rows.length+" unidade(s)";
   if(!rows.length){ wrap.innerHTML='<div class="clif-empty">Nenhuma unidade encontrada com esses filtros.</div>'; return; }
-  let h='<div class="gridscroll"><table class="ctbl"><thead><tr><th class="cw-b">Bloco</th><th class="cw-u">Unidade</th><th>Cliente</th><th class="cw-d">Data</th><th class="cw-h">Horário</th><th>Responsável</th><th class="cw-s">Status</th><th class="cw-d">Rev.</th><th>Obs.</th></tr></thead><tbody>';
+  let h='<div class="gridscroll"><table class="ctbl"><thead><tr><th class="cw-b">Bloco</th><th class="cw-u">Unidade</th><th class="th-cli">Cliente</th><th class="cw-d">Data</th><th class="cw-h">Horário</th><th>Responsável</th><th class="cw-s">Status</th><th class="cw-d">Rev.</th><th class="th-obs">Obs.</th></tr></thead><tbody>';
   rows.forEach(r=>{
     const s=CLR_C[r.code]||CLR_C.na, i=r.info;
     h+=`<tr>
       <td class="cap">${r.b}</td>
       <td class="cunit" title="${PAVL[r.p]} · Apto ${r.a}">${unitCode_(r.p,r.a)}</td>
-      <td>${esc(i.cliente)||"—"}</td>
+      <td class="ccli">${esc(i.cliente)||"—"}</td>
       <td>${i.data_vistoria?fmtDate(i.data_vistoria):"—"}</td>
       <td>${esc(i.horario_vistoria)||"—"}</td>
       <td>${esc(i.responsavel)||"—"}</td>
@@ -874,17 +877,18 @@ function printCliList(){
     h1{font-size:14px;margin:0 0 2px}
     .sub{font-size:9.5px;color:#666;margin-bottom:9px}
     table{width:100%;border-collapse:collapse;font-size:10px}
-    th,td{border:1px solid #ccc;padding:3px 6px;text-align:left;line-height:1.25}
+    th,td{border:1px solid #ccc;padding:3px 6px;text-align:center;line-height:1.25}
     th{background:#2f4a34;color:#fff;font-size:8.5px;text-transform:uppercase;letter-spacing:.3px}
     tr:nth-child(even) td{background:#f7f9f6}
+    th.w-cli,td.w-cli{text-align:left}
     th.w-b,td.w-b{width:9%} th.w-u,td.w-u{width:10%} th.w-d,td.w-d{width:13%} th.w-h,td.w-h{width:10%}
   </style></head><body>
     <h1>Alto do Jerivá · Vistoria Cliente</h1>
     <div class="sub">Lista filtrada — gerado em ${now} — ${rows.length} unidade(s)</div>
-    <table><thead><tr><th class="w-b">Bloco</th><th class="w-u">Unidade</th><th>Cliente</th><th class="w-d">Data</th><th class="w-h">Horário</th><th>Responsável</th></tr></thead><tbody>`;
+    <table><thead><tr><th class="w-b">Bloco</th><th class="w-u">Unidade</th><th class="w-cli">Cliente</th><th class="w-d">Data</th><th class="w-h">Horário</th><th>Responsável</th></tr></thead><tbody>`;
   rows.forEach(r=>{
     const i=r.info;
-    body+=`<tr><td class="w-b">${esc(r.b)}</td><td class="w-u">${unitCode_(r.p,r.a)}</td><td>${esc(i.cliente)||"—"}</td><td class="w-d">${i.data_vistoria?fmtDate(i.data_vistoria):"—"}</td><td class="w-h">${esc(i.horario_vistoria)||"—"}</td><td>${esc(i.responsavel)||"—"}</td></tr>`;
+    body+=`<tr><td class="w-b">${esc(r.b)}</td><td class="w-u">${unitCode_(r.p,r.a)}</td><td class="w-cli">${esc(i.cliente)||"—"}</td><td class="w-d">${i.data_vistoria?fmtDate(i.data_vistoria):"—"}</td><td class="w-h">${esc(i.horario_vistoria)||"—"}</td><td>${esc(i.responsavel)||"—"}</td></tr>`;
   });
   body+='</tbody></table></body></html>';
   const w=window.open("","_blank");
