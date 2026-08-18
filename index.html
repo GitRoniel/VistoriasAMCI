@@ -154,29 +154,8 @@ table.mx{border-collapse:separate;border-spacing:0;width:100%;min-width:820px}
 .aprov .abar i{display:block;height:100%;background:#2f9e5b;transition:width .4s}
 .aprov .ac.rev .abar i{background:var(--sunset)}
 .aprov .af{font-size:9.5px;color:var(--text-light);margin-top:5px;font-weight:600}
-.aprov .goal{font-size:9.5px;margin-top:4px;font-weight:800;color:#0b3d91;background:#e7effe;border:1px solid #cdddfb;border-radius:5px;padding:3px 7px;display:none}
-.aprov .goal.show{display:inline-block}
-.aprov .goal.ok{color:#12592b;background:#e3f3e8;border-color:#c7e6cf}
-
-/* ── Impressão: lista de vistorias ── */
-#printArea{display:none}
-@media print{
-  body *{visibility:hidden}
-  #printArea, #printArea *{visibility:visible}
-  #printArea{display:block;position:absolute;top:0;left:0;width:100%;padding:0;margin:0}
-  #printArea h1{font-size:15px;margin:0 0 2px;font-family:var(--font,inherit)}
-  #printArea .printmeta{font-size:10px;color:#555;margin:0 0 10px}
-  table.printtbl{width:100%;border-collapse:collapse;table-layout:fixed;font-size:10.5px}
-  table.printtbl th,table.printtbl td{border:1px solid #999;padding:3px 5px;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  table.printtbl th{background:#eee !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  table.printtbl th:nth-child(1),table.printtbl td:nth-child(1){width:8%}
-  table.printtbl th:nth-child(2),table.printtbl td:nth-child(2){width:16%}
-  table.printtbl th:nth-child(3),table.printtbl td:nth-child(3){width:30%}
-  table.printtbl th:nth-child(4),table.printtbl td:nth-child(4){width:14%}
-  table.printtbl th:nth-child(5),table.printtbl td:nth-child(5){width:12%}
-  table.printtbl th:nth-child(6),table.printtbl td:nth-child(6){width:20%}
-  @page{margin:12mm}
-}
+.aprov .af-goal{font-size:9.5px;color:#e8842a;margin-top:3px;font-weight:800}
+.aprov .af-goal.ok{color:#2f9e5b}
 
 /* ── POPOVER ── */
 .pop{position:fixed;z-index:80;background:#fff;border:1px solid var(--border);border-radius:11px;
@@ -271,8 +250,8 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .modetog button{flex:1;padding:8px 6px;border-radius:7px;font-size:11px;font-weight:800;letter-spacing:.3px;color:var(--text-light);transition:.14s}
 .modetog button.active{background:#fff;color:var(--moss);box-shadow:0 1px 4px rgba(31,61,56,.12)}
 /* CLIENTE · filtros da lista */
-.clif{background:#fafcf9;border:1px solid var(--border);border-radius:9px;padding:10px 11px;margin-bottom:11px}
-.clif-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.clif{background:#fafcf9;border:1px solid var(--border);border-radius:9px;padding:9px 10px;margin-bottom:9px}
+.clif-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px}
 .clif-row:last-child{margin-bottom:0}
 .clif-lbl{font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--moss);white-space:nowrap}
 .clif-chips{display:flex;gap:5px;flex-wrap:wrap}
@@ -282,7 +261,6 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .clif-count{font-size:10.5px;font-weight:800;color:var(--text-light);margin-left:auto}
 .clif-empty{padding:20px;text-align:center;font-size:12px;color:var(--text-light)}
 .clif-obs{max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-light)}
-.clif-inputs .fld-unid{min-width:110px}
 .stack-sec{margin-bottom:15px}
 .stack-sec .sst{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap}
 .stack-sec .sst .snm{font-size:12px;font-weight:800;color:var(--moss);display:flex;align-items:center;gap:6px}
@@ -339,10 +317,13 @@ pre.code{background:#122820;color:#cfe8dd;padding:13px;border-radius:9px;font-si
 .pop .popdate{border-top:1px solid var(--border);margin-top:5px;padding:8px 8px 4px}
 .pop .popdate label{display:block;font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--text-light);margin-bottom:4px}
 .pop .popdate input,.pop .popdate textarea{width:100%;padding:7px 9px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;color:var(--text);font-family:inherit;resize:vertical}
-.ctbl{border-collapse:separate;border-spacing:0;width:100%;font-size:11px;min-width:600px}
-.ctbl thead th{position:sticky;top:0;background:var(--moss);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:8px 8px;text-align:left;z-index:2}
-.ctbl td.cap{font-weight:800;color:var(--moss);white-space:nowrap;padding:6px 9px;background:#f4f7f2;border-bottom:1px solid var(--border);position:sticky;left:0;z-index:1}
-.ctbl td.cstat{padding:6px 9px;border-bottom:1px solid #eef2ea;border-left:1px solid #eef2ea;cursor:pointer;transition:.1s;min-width:118px}
+.ctbl{border-collapse:separate;border-spacing:0;width:100%;font-size:11px;min-width:560px;table-layout:auto}
+.ctbl thead th{position:sticky;top:0;background:var(--moss);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:7px 8px;text-align:left;z-index:2;white-space:nowrap}
+.ctbl td{padding:5px 8px;border-bottom:1px solid #eef2ea;white-space:nowrap}
+.ctbl td.cap{font-weight:800;color:var(--moss);padding:5px 9px;background:#f4f7f2;border-bottom:1px solid var(--border);position:sticky;left:0;z-index:1}
+.ctbl td.cunit{font-weight:700;color:var(--text);letter-spacing:.3px}
+.ctbl th.cw-b,.ctbl th.cw-u,.ctbl th.cw-d,.ctbl th.cw-h{width:1%}
+.ctbl td.cstat{padding:5px 9px;border-bottom:1px solid #eef2ea;border-left:1px solid #eef2ea;cursor:pointer;transition:.1s;white-space:nowrap}
 .ctbl td.cstat:hover{filter:brightness(.95)}
 .ctbl td.cstat .cs-l{display:block;font-weight:800;font-size:11px;line-height:1.2}
 .ctbl td.cstat .cs-d{display:block;font-size:9px;font-weight:700;opacity:.85;margin-top:1px}
@@ -453,7 +434,7 @@ body.is-admin .tab-admin,body.is-admin .nav-admin{display:flex!important}
         <div class="cbox"><div class="ch">Resumo Geral</div><div class="resumo" id="cliResumo"></div></div>
         <div class="cbox"><div class="ch">Percentual de Aprovação</div>
           <div class="aprov">
-            <div class="ac"><div class="al">1ª Vistoria</div><div class="av" id="pct1">0%</div><div class="abar"><i id="bar1"></i></div><div class="af" id="foot1"></div><div class="goal" id="goal1"></div></div>
+            <div class="ac"><div class="al">1ª Vistoria</div><div class="av" id="pct1">0%</div><div class="abar"><i id="bar1"></i></div><div class="af" id="foot1"></div><div class="af-goal" id="goal1"></div></div>
             <div class="ac rev"><div class="al">Revistoria</div><div class="av" id="pctR">0%</div><div class="abar"><i id="barR"></i></div><div class="af" id="footR"></div></div>
           </div>
         </div>
@@ -546,6 +527,7 @@ const BLOCOS=["A","C","E","G","H","F","D","B"];
 const PAVS=["6º","5º","4º","3º","2º","1º","T"];
 const PAVL={"6º":"6º Pav","5º":"5º Pav","4º":"4º Pav","3º":"3º Pav","2º":"2º Pav","1º":"1º Pav","T":"Térreo"};
 const APTS=["01","02","03","04","05","06","07","08"];
+function unitCode_(p,a){ return (p==="T"?"T":p.replace("º","")) + a; }
 
 const STL={ni:"Não iniciado",ea:"Em andamento",lv:"Liberado p/ Próxima Etapa",rv:"Pendências Revisórias",rev:"Revistoriado",fz:"Finalizado",ap:"Liberado / Aprovado",rp:"Reprovado"};
 const CLR_O={
@@ -566,6 +548,7 @@ const CLL={na:"Não agendado",ag:"Agendado",rm:"Remarcado",rv:"Revistoria",ap:"A
 const CLR_C={na:{bg:"#fff",tx:"#9aa39a",bd:"#c7ccbf"},ag:{bg:"#f2c14e",tx:"#5a4409",bd:"#d9a92f"},rm:{bg:"#ff9e57",tx:"#7a3300",bd:"#e6863f"},rv:{bg:"#e8842a",tx:"#fff",bd:"#c96a1a"},ap:{bg:"#2f9e5b",tx:"#fff",bd:"#268a4d"}};
 const CLI_FLOW=["na","ag","rm","rv","ap"];
 function normCli(t){t=(t||"").toString().trim().toLowerCase();
+  if(t.includes("não agend")||t.includes("nao agend"))return"na";
   if(t.includes("aprov"))return"ap";
   if(t.includes("revist"))return"rv";
   if(t.includes("remarc"))return"rm";
@@ -606,7 +589,8 @@ function initState(){
 
 /* state */
 let obraFrente="acab", obraBlk="ALL", cliBlk="ALL", obraMode="frente";
-let cliMode="mapa", cliFilt={status:"ALL",bloco:"ALL",dtIni:"",dtFim:"",q:"",unid:""};
+let cliMode="mapa", cliFilt={status:[],bloco:"ALL",dtIni:"",dtFim:"",hrIni:"",hrFim:"",u:"",q:""};
+let cliListLastRows=[];
 let isMobile=matchMedia("(max-width:720px)").matches;
 
 /* ── shared grid builder ── */
@@ -762,21 +746,20 @@ function renderCli(){
     `<div class="rc tot"><div class="rl">Total de unidades</div><div class="rv">${t} <span style="font-size:12px;color:#9aa39a;font-weight:700">apartamentos</span></div></div>`;
   const vist=ap+rv, p1=vist?Math.round(ap/vist*100):0, pr=t?Math.round(rv/t*100):0;
   pct1.textContent=p1+"%"; bar1.style.width=p1+"%"; foot1.textContent=`${ap} de ${vist} vistoriados`;
-  pctR.textContent=pr+"%"; barR.style.width=pr+"%"; footR.textContent=`${rv} unidade(s) p/ revistoria`;
-  // meta de 70% de aprovação: quantas aprovações novas faltam pra bater a meta
-  const META=0.7, goalEl=document.getElementById("goal1");
+  const META=0.70; const goalEl=document.getElementById("goal1");
   if(goalEl){
     if(vist===0){
-      goalEl.className="goal"; goalEl.textContent="";
+      goalEl.textContent=""; goalEl.className="af-goal";
     } else if(ap/vist>=META){
-      goalEl.className="goal show ok"; goalEl.textContent=`Meta de ${Math.round(META*100)}% atingida ✓`;
+      goalEl.textContent="Meta de 70% atingida ✓"; goalEl.className="af-goal ok";
     } else {
-      const falta=Math.max(1,Math.ceil((META*vist-ap)/(1-META)));
-      const novoAp=ap+falta, novoVist=vist+falta;
-      goalEl.className="goal show";
-      goalEl.textContent=`Faltam ${falta} aprovação(ões) p/ ${Math.round(META*100)}% (ficaria ${novoAp} de ${novoVist})`;
+      const need=Math.max(0,Math.ceil((META*vist-ap)/(1-META)));
+      const novoP=Math.round((ap+need)/(vist+need)*100);
+      goalEl.textContent=`Faltam ${need} aprovação(ões) p/ 70% (ficaria ${ap+need} de ${vist+need} · ${novoP}%)`;
+      goalEl.className="af-goal";
     }
   }
+  pctR.textContent=pr+"%"; barR.style.width=pr+"%"; footR.textContent=`${rv} unidade(s) p/ revistoria`;
   if(cliMode==="lista"){ ensureCliFilters(); renderCliList(); }
 }
 
@@ -795,7 +778,7 @@ function ensureCliFilters(){
     <div class="clif-row">
       <span class="clif-lbl">Status</span>
       <div class="clif-chips" id="clifStatus">${["ALL",...CLI_FLOW].map(c=>
-        `<button class="chip ${cliFilt.status===c?"active":""}" data-fstatus="${c}">${c==="ALL"?"Todos":CLL[c]}</button>`).join("")}</div>
+        `<button class="chip ${c==="ALL"?(cliFilt.status.length===0?"active":""):(cliFilt.status.includes(c)?"active":"")}" data-fstatus="${c}">${c==="ALL"?"Todos":CLL[c]}</button>`).join("")}</div>
       <span class="clif-count" id="clifCount"></span>
     </div>
     <div class="clif-row">
@@ -806,64 +789,68 @@ function ensureCliFilters(){
     <div class="clif-row clif-inputs">
       <div class="fld"><label>Vistoria de</label><input type="date" id="clifDtIni" value="${esc(cliFilt.dtIni)}"></div>
       <div class="fld"><label>Até</label><input type="date" id="clifDtFim" value="${esc(cliFilt.dtFim)}"></div>
+      <div class="fld"><label>Horário de</label><input type="time" id="clifHrIni" value="${esc(cliFilt.hrIni)}"></div>
+      <div class="fld"><label>Até</label><input type="time" id="clifHrFim" value="${esc(cliFilt.hrFim)}"></div>
       <div class="fld clif-q"><label>Buscar cliente</label><input type="text" id="clifQ" placeholder="Nome do cliente..." value="${esc(cliFilt.q)}"></div>
-      <div class="fld fld-unid"><label>Unidade</label><input type="text" id="clifUnid" placeholder="Ex: A601" value="${esc(cliFilt.unid)}"></div>
+      <div class="fld clif-q"><label>Unidade</label><input type="text" id="clifU" placeholder="Ex.: 604 ou A604" value="${esc(cliFilt.u)}"></div>
       <button class="btn g" id="clifClear" type="button">Limpar filtros</button>
-      <button class="btn g" id="clifPrint" type="button">🖨️ Imprimir</button>
+      <button class="btn" id="clifPrint" type="button">🖨️ Imprimir</button>
     </div>`;
-  el.querySelectorAll("[data-fstatus]").forEach(b=>b.onclick=()=>{cliFilt.status=b.dataset.fstatus;el.querySelectorAll("[data-fstatus]").forEach(x=>x.classList.toggle("active",x===b));renderCliList();});
+  el.querySelectorAll("[data-fstatus]").forEach(b=>b.onclick=()=>{
+    const c=b.dataset.fstatus;
+    if(c==="ALL"){ cliFilt.status=[]; }
+    else{
+      const i=cliFilt.status.indexOf(c);
+      if(i>=0)cliFilt.status.splice(i,1); else cliFilt.status.push(c);
+    }
+    el.querySelectorAll("[data-fstatus]").forEach(x=>{
+      const xc=x.dataset.fstatus;
+      x.classList.toggle("active", xc==="ALL"?cliFilt.status.length===0:cliFilt.status.includes(xc));
+    });
+    renderCliList();
+  });
   el.querySelectorAll("[data-fbloco]").forEach(b=>b.onclick=()=>{cliFilt.bloco=b.dataset.fbloco;el.querySelectorAll("[data-fbloco]").forEach(x=>x.classList.toggle("active",x===b));renderCliList();});
   el.querySelector("#clifDtIni").oninput=e=>{cliFilt.dtIni=e.target.value;renderCliList();};
   el.querySelector("#clifDtFim").oninput=e=>{cliFilt.dtFim=e.target.value;renderCliList();};
+  el.querySelector("#clifHrIni").oninput=e=>{cliFilt.hrIni=e.target.value;renderCliList();};
+  el.querySelector("#clifHrFim").oninput=e=>{cliFilt.hrFim=e.target.value;renderCliList();};
   el.querySelector("#clifQ").oninput=e=>{cliFilt.q=e.target.value;renderCliList();};
-  el.querySelector("#clifUnid").oninput=e=>{cliFilt.unid=e.target.value;renderCliList();};
-  el.querySelector("#clifClear").onclick=()=>{cliFilt={status:"ALL",bloco:"ALL",dtIni:"",dtFim:"",q:"",unid:""};el.dataset.built="";ensureCliFilters();renderCliList();};
+  el.querySelector("#clifU").oninput=e=>{cliFilt.u=e.target.value;renderCliList();};
+  el.querySelector("#clifClear").onclick=()=>{cliFilt={status:[],bloco:"ALL",dtIni:"",dtFim:"",hrIni:"",hrFim:"",u:"",q:""};el.dataset.built="";ensureCliFilters();renderCliList();};
   el.querySelector("#clifPrint").onclick=printCliList;
 }
-/** Monta a lista de unidades já filtrada e ordenada (usada pela tabela em
- *  tela e pela impressão, pra nunca ficarem dessincronizadas).
- *  Ordem: data da vistoria (crescente) e, dentro do mesmo dia, horário
- *  DESCENDENTE (mais tarde primeiro); por fim bloco/pav/apto. */
-function getCliFilteredRows(){
+function renderCliList(){
+  const wrap=document.getElementById("cliListTbl"); if(!wrap)return;
   let rows=[];
   BLOCOS.forEach(b=>PAVS.forEach(p=>APTS.forEach(a=>{
     const k=kC(b,p,a); rows.push({b,p,a,code:state.cli[k],info:state.cliInfo[k]||{}});
   })));
-  if(cliFilt.status!=="ALL") rows=rows.filter(r=>r.code===cliFilt.status);
+  if(cliFilt.status.length) rows=rows.filter(r=>cliFilt.status.includes(r.code));
   if(cliFilt.bloco!=="ALL") rows=rows.filter(r=>r.b===cliFilt.bloco);
   if(cliFilt.dtIni) rows=rows.filter(r=>r.info.data_vistoria && r.info.data_vistoria>=cliFilt.dtIni);
   if(cliFilt.dtFim) rows=rows.filter(r=>r.info.data_vistoria && r.info.data_vistoria<=cliFilt.dtFim);
+  if(cliFilt.hrIni) rows=rows.filter(r=>r.info.horario_vistoria && r.info.horario_vistoria>=cliFilt.hrIni);
+  if(cliFilt.hrFim) rows=rows.filter(r=>r.info.horario_vistoria && r.info.horario_vistoria<=cliFilt.hrFim);
   if(cliFilt.q){ const q=cliFilt.q.trim().toLowerCase(); rows=rows.filter(r=>(r.info.cliente||"").toLowerCase().includes(q)); }
-  if(cliFilt.unid){
-    const u=cliFilt.unid.trim().toLowerCase().replace(/[^a-z0-9]/g,"");
-    rows=rows.filter(r=>{
-      const us=(r.b+r.p+r.a).toLowerCase().replace(/[^a-z0-9]/g,"");
-      return u && us.includes(u);
-    });
-  }
+  if(cliFilt.u){ const uq=cliFilt.u.trim().toLowerCase(); rows=rows.filter(r=>(r.b+unitCode_(r.p,r.a)).toLowerCase().includes(uq)||unitCode_(r.p,r.a).toLowerCase().includes(uq)); }
   rows.sort((x,y)=>{
     const dx=x.info.data_vistoria||"9999-99-99", dy=y.info.data_vistoria||"9999-99-99";
     if(dx!==dy)return dx<dy?-1:1;
     const hx=x.info.horario_vistoria||"", hy=y.info.horario_vistoria||"";
-    if(hx!==hy)return hx<hy?1:-1; // horário descendente dentro do mesmo dia
+    if(hx!==hy)return hx<hy?1:-1; // horário em ordem descendente dentro de cada data
     if(x.b!==y.b)return x.b<y.b?-1:1;
     const pi=PAVS.indexOf(x.p)-PAVS.indexOf(y.p); if(pi)return pi;
     return x.a<y.a?-1:1;
   });
-  return rows;
-}
-function renderCliList(){
-  const wrap=document.getElementById("cliListTbl"); if(!wrap)return;
-  const rows=getCliFilteredRows();
+  cliListLastRows=rows;
   const cnt=document.getElementById("clifCount"); if(cnt)cnt.textContent=rows.length+" unidade(s)";
   if(!rows.length){ wrap.innerHTML='<div class="clif-empty">Nenhuma unidade encontrada com esses filtros.</div>'; return; }
-  let h='<div class="gridscroll"><table class="ctbl"><thead><tr><th>Bloco</th><th>Pav</th><th>Apto</th><th>Cliente</th><th>Data</th><th>Horário</th><th>Responsável</th><th>Status</th><th>Rev.</th><th>Obs.</th></tr></thead><tbody>';
+  let h='<div class="gridscroll"><table class="ctbl"><thead><tr><th class="cw-b">Bloco</th><th class="cw-u">Unidade</th><th>Cliente</th><th class="cw-d">Data</th><th class="cw-h">Horário</th><th>Responsável</th><th class="cw-s">Status</th><th class="cw-d">Rev.</th><th>Obs.</th></tr></thead><tbody>';
   rows.forEach(r=>{
     const s=CLR_C[r.code]||CLR_C.na, i=r.info;
     h+=`<tr>
       <td class="cap">${r.b}</td>
-      <td>${PAVL[r.p]}</td>
-      <td>${r.a}</td>
+      <td class="cunit" title="${PAVL[r.p]} · Apto ${r.a}">${unitCode_(r.p,r.a)}</td>
       <td>${esc(i.cliente)||"—"}</td>
       <td>${i.data_vistoria?fmtDate(i.data_vistoria):"—"}</td>
       <td>${esc(i.horario_vistoria)||"—"}</td>
@@ -876,31 +863,34 @@ function renderCliList(){
   h+='</tbody></table></div>';
   wrap.innerHTML=h;
 }
-/** Impressão da lista filtrada: só Bloco, Unidade, Cliente, Data, Horário
- *  e Responsável, em tabela proporcional com espaçamento mínimo (ver
- *  CSS @media print / #printArea). Usa exatamente os mesmos filtros e a
- *  mesma ordenação (horário descendente) que a tela. */
 function printCliList(){
-  const rows=getCliFilteredRows();
-  if(!rows.length){ alert("Nenhuma unidade encontrada com os filtros atuais para imprimir."); return; }
-  let h='<table class="printtbl"><thead><tr><th>Bloco</th><th>Unidade</th><th>Cliente</th><th>Data</th><th>Horário</th><th>Responsável</th></tr></thead><tbody>';
+  const rows=cliListLastRows;
+  if(!rows||!rows.length){ toast("Nada para imprimir com esses filtros"); return; }
+  const now=new Date().toLocaleString("pt-BR");
+  let body=`<!doctype html><html><head><meta charset="utf-8"><title>Vistoria Cliente — Lista</title><style>
+    @page{margin:10mm}
+    *{box-sizing:border-box}
+    body{font-family:Arial,Helvetica,sans-serif;color:#12241a;margin:0;padding:0}
+    h1{font-size:14px;margin:0 0 2px}
+    .sub{font-size:9.5px;color:#666;margin-bottom:9px}
+    table{width:100%;border-collapse:collapse;font-size:10px}
+    th,td{border:1px solid #ccc;padding:3px 6px;text-align:left;line-height:1.25}
+    th{background:#2f4a34;color:#fff;font-size:8.5px;text-transform:uppercase;letter-spacing:.3px}
+    tr:nth-child(even) td{background:#f7f9f6}
+    th.w-b,td.w-b{width:9%} th.w-u,td.w-u{width:10%} th.w-d,td.w-d{width:13%} th.w-h,td.w-h{width:10%}
+  </style></head><body>
+    <h1>Alto do Jerivá · Vistoria Cliente</h1>
+    <div class="sub">Lista filtrada — gerado em ${now} — ${rows.length} unidade(s)</div>
+    <table><thead><tr><th class="w-b">Bloco</th><th class="w-u">Unidade</th><th>Cliente</th><th class="w-d">Data</th><th class="w-h">Horário</th><th>Responsável</th></tr></thead><tbody>`;
   rows.forEach(r=>{
     const i=r.info;
-    h+=`<tr>
-      <td>${r.b}</td>
-      <td>${PAVL[r.p]} · ${r.a}</td>
-      <td>${esc(i.cliente)||"—"}</td>
-      <td>${i.data_vistoria?fmtDate(i.data_vistoria):"—"}</td>
-      <td>${esc(i.horario_vistoria)||"—"}</td>
-      <td>${esc(i.responsavel)||"—"}</td>
-    </tr>`;
+    body+=`<tr><td class="w-b">${esc(r.b)}</td><td class="w-u">${unitCode_(r.p,r.a)}</td><td>${esc(i.cliente)||"—"}</td><td class="w-d">${i.data_vistoria?fmtDate(i.data_vistoria):"—"}</td><td class="w-h">${esc(i.horario_vistoria)||"—"}</td><td>${esc(i.responsavel)||"—"}</td></tr>`;
   });
-  h+='</tbody></table>';
-  const pa=document.getElementById("printArea");
-  if(!pa)return;
-  pa.innerHTML=`<h1>Vistorias Alto do Jerivá — Lista de Vistorias</h1>
-    <div class="printmeta">Gerado em ${new Date().toLocaleString("pt-BR")} · ${rows.length} unidade(s)</div>${h}`;
-  window.print();
+  body+='</tbody></table></body></html>';
+  const w=window.open("","_blank");
+  if(!w){ toast("Habilite pop-ups para imprimir"); return; }
+  w.document.write(body); w.document.close();
+  w.onload=()=>{ w.focus(); w.print(); };
 }
 
 /* ── POPOVER ── */
@@ -1167,6 +1157,5 @@ setSync("");
 bootAuth();
 setInterval(()=>{const _p=document.getElementById("pop");if(_p&&_p.classList.contains("open"))return;if(currentUser)load(true);},30000);
 </script>
-<div id="printArea"></div>
 </body>
 </html>
