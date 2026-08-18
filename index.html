@@ -592,7 +592,7 @@ function initState(){
 
 /* state */
 let obraFrente="acab", obraBlk="ALL", cliBlk="ALL", obraMode="frente";
-let cliMode="mapa", cliFilt={status:[],bloco:"ALL",dtIni:"",dtFim:"",hrIni:"",hrFim:"",u:"",q:""};
+let cliMode="mapa", cliFilt={status:[],bloco:"ALL",dtIni:"",dtFim:"",hrSort:"asc",u:"",q:""};
 let cliListLastRows=[];
 let isMobile=matchMedia("(max-width:720px)").matches;
 
@@ -792,10 +792,9 @@ function ensureCliFilters(){
     <div class="clif-row clif-inputs">
       <div class="fld"><label>Vistoria de</label><input type="date" id="clifDtIni" value="${esc(cliFilt.dtIni)}"></div>
       <div class="fld"><label>Até</label><input type="date" id="clifDtFim" value="${esc(cliFilt.dtFim)}"></div>
-      <div class="fld"><label>Horário de</label><input type="time" id="clifHrIni" value="${esc(cliFilt.hrIni)}"></div>
-      <div class="fld"><label>Até</label><input type="time" id="clifHrFim" value="${esc(cliFilt.hrFim)}"></div>
       <div class="fld clif-q"><label>Buscar cliente</label><input type="text" id="clifQ" placeholder="Nome do cliente..." value="${esc(cliFilt.q)}"></div>
       <div class="fld clif-q"><label>Unidade</label><input type="text" id="clifU" placeholder="Ex.: 604 ou A604" value="${esc(cliFilt.u)}"></div>
+      <div class="fld"><label>&nbsp;</label><button class="btn g" id="clifHrSort" type="button">${cliFilt.hrSort==="asc"?"🕑 Horário: cedo → tarde":"🕑 Horário: tarde → cedo"}</button></div>
       <button class="btn g" id="clifClear" type="button">Limpar filtros</button>
       <button class="btn" id="clifPrint" type="button">🖨️ Imprimir</button>
     </div>`;
@@ -815,11 +814,10 @@ function ensureCliFilters(){
   el.querySelectorAll("[data-fbloco]").forEach(b=>b.onclick=()=>{cliFilt.bloco=b.dataset.fbloco;el.querySelectorAll("[data-fbloco]").forEach(x=>x.classList.toggle("active",x===b));renderCliList();});
   el.querySelector("#clifDtIni").oninput=e=>{cliFilt.dtIni=e.target.value;renderCliList();};
   el.querySelector("#clifDtFim").oninput=e=>{cliFilt.dtFim=e.target.value;renderCliList();};
-  el.querySelector("#clifHrIni").oninput=e=>{cliFilt.hrIni=e.target.value;renderCliList();};
-  el.querySelector("#clifHrFim").oninput=e=>{cliFilt.hrFim=e.target.value;renderCliList();};
   el.querySelector("#clifQ").oninput=e=>{cliFilt.q=e.target.value;renderCliList();};
   el.querySelector("#clifU").oninput=e=>{cliFilt.u=e.target.value;renderCliList();};
-  el.querySelector("#clifClear").onclick=()=>{cliFilt={status:[],bloco:"ALL",dtIni:"",dtFim:"",hrIni:"",hrFim:"",u:"",q:""};el.dataset.built="";ensureCliFilters();renderCliList();};
+  el.querySelector("#clifHrSort").onclick=e=>{cliFilt.hrSort=cliFilt.hrSort==="asc"?"desc":"asc";e.target.textContent=cliFilt.hrSort==="asc"?"🕑 Horário: cedo → tarde":"🕑 Horário: tarde → cedo";renderCliList();};
+  el.querySelector("#clifClear").onclick=()=>{cliFilt={status:[],bloco:"ALL",dtIni:"",dtFim:"",hrSort:"asc",u:"",q:""};el.dataset.built="";ensureCliFilters();renderCliList();};
   el.querySelector("#clifPrint").onclick=printCliList;
 }
 function renderCliList(){
@@ -832,15 +830,13 @@ function renderCliList(){
   if(cliFilt.bloco!=="ALL") rows=rows.filter(r=>r.b===cliFilt.bloco);
   if(cliFilt.dtIni) rows=rows.filter(r=>r.info.data_vistoria && r.info.data_vistoria>=cliFilt.dtIni);
   if(cliFilt.dtFim) rows=rows.filter(r=>r.info.data_vistoria && r.info.data_vistoria<=cliFilt.dtFim);
-  if(cliFilt.hrIni) rows=rows.filter(r=>r.info.horario_vistoria && r.info.horario_vistoria>=cliFilt.hrIni);
-  if(cliFilt.hrFim) rows=rows.filter(r=>r.info.horario_vistoria && r.info.horario_vistoria<=cliFilt.hrFim);
   if(cliFilt.q){ const q=cliFilt.q.trim().toLowerCase(); rows=rows.filter(r=>(r.info.cliente||"").toLowerCase().includes(q)); }
   if(cliFilt.u){ const uq=cliFilt.u.trim().toLowerCase(); rows=rows.filter(r=>(r.b+unitCode_(r.p,r.a)).toLowerCase().includes(uq)||unitCode_(r.p,r.a).toLowerCase().includes(uq)); }
   rows.sort((x,y)=>{
     const dx=x.info.data_vistoria||"9999-99-99", dy=y.info.data_vistoria||"9999-99-99";
-    if(dx!==dy)return dx<dy?-1:1;
+    if(dx!==dy)return dx<dy?-1:1; // agrupa por dia (mais cedo primeiro)
     const hx=x.info.horario_vistoria||"", hy=y.info.horario_vistoria||"";
-    if(hx!==hy)return hx<hy?1:-1; // horário em ordem descendente dentro de cada data
+    if(hx!==hy)return cliFilt.hrSort==="asc" ? (hx<hy?-1:1) : (hx<hy?1:-1); // dentro do dia, cedo→tarde ou tarde→cedo
     if(x.b!==y.b)return x.b<y.b?-1:1;
     const pi=PAVS.indexOf(x.p)-PAVS.indexOf(y.p); if(pi)return pi;
     return x.a<y.a?-1:1;
